@@ -432,9 +432,9 @@ export const ORDER: StepKey[] = [
   "stepWorkout",
   "stepEnergyLevel",
   "stepHeight",
-  "stepWeight",
-  "stepWeightGoal",
-  "stepAge",
+  // "stepWeight",
+  // "stepWeightGoal",
+  // "stepAge",
 ];
 
 export const pathOf = (key: StepKey) => `/quiz/${camelToKebab(key)}`;
