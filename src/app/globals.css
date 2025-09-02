@@ -1,4 +1,58 @@
+:root {
+  --bg: #fff;
+  --bg-items: #f5f5f5;
+  --btn-bg: #f5f5f5;
+  --panel: #151935;
+  --text: #292929;
+  --muted: #8b91a7;
+  --text-black: #000;
+  --text-white: #fff;
+  --primary: #f4c017;
+  --primary-hover: #eaf7f6;
+  --primary-buttons: #00857a;
+  --primary-buttons-hover: #eaf7f6;
+  --border: #2a2f49;
+  --primary-bg: #e8e8e8;
+  --border-active: #00857a;
+
+  --radius: 16px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  --container: 1120px;
+}
+
+/* === Базовые стили === */
+* {
+  box-sizing: border-box;
+}
+
+html,
 body {
+  height: 100%;
+  margin: 0;
+  color: var(--text);
+  background: var(--bg);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 100vw;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Контейнер */
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 16px 40px;
+}
+
+/* body {
   max-width: 100vw;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -14,7 +68,7 @@ button,
 input,
 select,
 textarea {
-  font: inherit; /* наследует и family, и size, и weight */
+  font: inherit;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -34,4 +88,4 @@ a {
   html {
     color-scheme: dark;
   }
-}
+} */

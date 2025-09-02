@@ -2,8 +2,8 @@
 import { useEffect, useState, useMemo } from "react";
 import { useQuiz } from "../quiz/QuizContext";
 import { QUIZ, type StepKey } from "../quiz/schema";
-import styled from "styled-components";
-import { Title, Description, List, Opt, Img, ImgIcon, SideImage } from "./QuizCardUI";
+import u from "./quiz-ui.module.css"; // общие классы
+import s from "./StepSingle.module.css"; // локальные стили side/tooltip
 
 type Props = { stepKey: StepKey };
 
@@ -12,26 +12,23 @@ export default function StepSingleCard({ stepKey }: Props) {
   const cfg = QUIZ[stepKey];
   const current = answers[stepKey] as string;
 
-  // этот компонент отрисосывавает только "single" компоненты
   if (cfg.kind !== "single") return null;
   const single = cfg;
 
-  // получаем gender из localStorage
-  const [gender, setGender] = useState<"male" | "female">("female"); // дефолт
+  const [gender, setGender] = useState<"male" | "female">("female");
   useEffect(() => {
     try {
-      const genderValue = localStorage.getItem("gender");
-      if (genderValue === "male" || genderValue === "female") {
-        setGender(genderValue);
-      }
+      const g = localStorage.getItem("gender");
+      if (g === "male" || g === "female") setGender(g);
     } catch {}
   }, []);
 
   const options = useMemo(() => single.options[gender], [single.options, gender]);
 
-  const sideImage = useMemo(() => {
-    return gender === "male" ? single.sideImageMale ?? null : single.sideImageFemale ?? null;
-  }, [single.sideImageMale, single.sideImageFemale, gender]);
+  const sideImage = useMemo(
+    () => (gender === "male" ? single.sideImageMale ?? null : single.sideImageFemale ?? null),
+    [single.sideImageMale, single.sideImageFemale, gender],
+  );
 
   const [showTip, setShowTip] = useState(false);
 
@@ -42,162 +39,100 @@ export default function StepSingleCard({ stepKey }: Props) {
 
   const hasSide = !!sideImage;
 
+  // найдём выбранную опцию и её группу
+  const selectedOpt = options.find((o) => o.value === current);
+  const groupKey = selectedOpt?.group;
+
+  // попробуем взять tooltip по группе
+  const groupTip = groupKey ? single.tooltipByGroup?.[groupKey] : undefined;
+
+  // решаем, что показывать
+  const hasGroupedTip = !!groupTip?.title || !!groupTip?.text;
+  const hasLegacyTip = !!single.tooltipTitle || !!single.tooltipText;
+
   return (
     <>
-      <Title>{single.title}</Title>
-      {single.description && <Description>{single.description}</Description>}
-      {hasSide ? (
-        <WithSide>
-          <SideWrapper>
-            <SideCol>{sideImage && <SideImg src={sideImage} alt='' loading='eager' />}</SideCol>
+      <h1 className={u.title}>{single.title}</h1>
+      {"description" in single && single.description && <p className={u.description}>{single.description}</p>}
 
-            <ContentCol>
-              <List>
+      {hasSide ? (
+        <section className={s.withSide}>
+          <div className={s.sideWrapper}>
+            <aside className={s.sideCol}>
+              {sideImage && <img className={s.sideImg} src={sideImage} alt='' loading='eager' />}
+            </aside>
+
+            <div className={s.contentCol}>
+              <div className={u.list}>
                 {options.map((item) => {
                   const active = current === item.value;
                   return (
-                    <Opt key={item.value} $active={active} onClick={() => choose(item.value)}>
+                    <button
+                      key={item.value}
+                      className={`${u.opt} ${active ? u.optActive : ""}`}
+                      onClick={() => choose(item.value)}
+                      type='button'>
                       {item.label}
-                      {item.image && <Img src={item.image} alt={item.label} />}
-                      {item.icon && <ImgIcon src={item.icon} alt={item.label} />}
-                    </Opt>
+                      {item.image && <img className={u.img} src={item.image} alt={item.label} />}
+                      {item.icon && <img className={u.imgIcon} src={item.icon} alt={item.label} />}
+                    </button>
                   );
                 })}
-              </List>
-            </ContentCol>
-          </SideWrapper>
+              </div>
+            </div>
+          </div>
 
           {single.tooltipTitle && showTip && (
-            <Tip role='status'>
+            <div className={s.tip} role='status'>
               {single.tooltipIcon && single.tooltipIcon}
               <div>
-                <TipTitle>{single.tooltipTitle}</TipTitle>
-                {single.tooltipText && <TipText>{single.tooltipText}</TipText>}
+                <div className={s.tipTitle}>{single.tooltipTitle}</div>
+                {single.tooltipText && <div className={s.tipText}>{single.tooltipText}</div>}
               </div>
-            </Tip>
+            </div>
           )}
-        </WithSide>
+        </section>
       ) : (
-        <List>
-          {options.map((item) => {
-            const active = current === item.value;
-            return (
-              <Opt key={item.value} $active={active} onClick={() => choose(item.value)}>
-                {item.label}
-                {item.image && <Img src={item.image} alt={item.label} />}
-                {item.icon && <ImgIcon src={item.icon} alt={item.label} />}
-              </Opt>
-            );
-          })}
+        <>
+          <div className={u.list}>
+            {options.map((item) => {
+              const active = current === item.value;
+              return (
+                <button
+                  key={item.value}
+                  className={`${u.opt} ${active ? u.optActive : ""}`}
+                  onClick={() => choose(item.value)}
+                  type='button'>
+                  {item.label}
+                  {item.image && <img className={u.img} src={item.image} alt={item.label} />}
+                  {item.icon && <img className={u.imgIcon} src={item.icon} alt={item.label} />}
+                </button>
+              );
+            })}
+          </div>
 
-          {single.tooltipTitle && showTip && (
-            <Tip role='status'>
-              {single.tooltipIcon && single.tooltipIcon}
-              <div>
-                <TipTitle>{single.tooltipTitle}</TipTitle>
-                {single.tooltipText && <TipText>{single.tooltipText}</TipText>}
+          {hasGroupedTip ? (
+            <>
+              <div className={s.tip} role='status'>
+                {groupTip?.iconSrc && <span className={s.tipIcon}>{groupTip.iconSrc}</span>}
+                <div>
+                  <div className={s.tipTitle}>{groupTip?.title}</div>
+                  {groupTip?.text && <div className={s.tipText}>{groupTip.text}</div>}
+                </div>
               </div>
-            </Tip>
-          )}
-        </List>
+              {groupTip?.note && <p className={s.tipNote}>{groupTip.note}</p>}
+            </>
+          ) : hasLegacyTip ? (
+            <div className={s.tip} role='status'>
+              {single.tooltipIcon}
+              <div>
+                <div className={s.tipTitle}>{single.tooltipTitle}</div>
+                {single.tooltipText && <div className={s.tipText}>{single.tooltipText}</div>}
+              </div>
+            </div>
+          ) : null}
+        </>
       )}
-      {/* {(single.sideImageMale || single.sideImageFemale) && (
-        <div>
-          {single.sideImageMale && gender === "male" && <SideImage src={single.sideImageMale} alt={single.title} />}
-          <List>
-            {options.map((item) => (
-              <Opt key={item.value} $active={current === item.value} onClick={() => setAnswer(stepKey, item.value)}>
-                {item.label}
-                {item.image && <Img src={item.image} alt={item.label} />}
-                {item.icon && <ImgIcon src={item.icon} alt={item.label} />}
-              </Opt>
-            ))}
-          </List>
-        </div>
-      )} */}
-      {/* <List>
-        {options.map((item) => (
-          <Opt key={item.value} $active={current === item.value} onClick={() => setAnswer(stepKey, item.value)}>
-            {item.label}
-            {item.image && <Img src={item.image} alt={item.label} />}
-            {item.icon && <ImgIcon src={item.icon} alt={item.label} />}
-          </Opt>
-        ))}
-      </List> */}
     </>
   );
 }
-
-const WithSide = styled.section``;
-
-const SideWrapper = styled.div`
-  display: flex;
-  gap: 24px;
-  align-items: start;
-`;
-const SideCol = styled.aside`
-  // display: flex;
-  // justify-content: center;
-`;
-const SideImg = styled.img`
-  width: 160px;
-  max-width: 100%;
-  height: auto;
-  border-radius: 16px;
-  object-fit: cover;
-  box-shadow: ${({ theme }) => theme.shadow};
-  background: ${({ theme }) => theme.colors.panel};
-`;
-const ContentCol = styled.div`
-  width: 100%;
-`;
-
-const SideList = styled.div`
-  display: grid;
-  gap: 12px;
-`;
-const SideOpt = styled.button<{ $active?: boolean }>`
-  font: inherit;
-  text-align: left;
-  padding: 16px 18px;
-  border-radius: 14px;
-  cursor: pointer;
-
-  border: 1px solid ${({ $active, theme }) => ($active ? theme.colors.primary : theme.colors.border)};
-  background: ${({ $active, theme }) => ($active ? "#e7fbf4" : theme.colors.panel)};
-  color: ${({ theme }) => theme.colors.text};
-
-  &:hover {
-    border-color: ${({ theme }) => theme.colors.primary};
-  }
-`;
-const LabelWrap = styled.span`
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-`;
-
-const Tip = styled.div`
-  margin-top: 14px;
-  padding: 14px 16px;
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  background: #e9f3ff;
-  color: #223;
-  border-radius: 12px;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-`;
-const TipIcon = styled.img`
-  width: 22px;
-  height: 22px;
-`;
-const TipTitle = styled.div`
-  font-weight: 700;
-  margin-bottom: 4px;
-`;
-const TipText = styled.div`
-  opacity: 0.9;
-  line-height: 1.45;
-  font-size: 14px;
-`;

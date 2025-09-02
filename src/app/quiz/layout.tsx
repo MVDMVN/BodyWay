@@ -1,9 +1,11 @@
 "use client";
-import styled from "styled-components";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { kebabToCamel } from "./_utils/case";
 import { ORDER, pathOf, nextKey, prevKey, type StepKey } from "./schema";
 import { QuizProvider, useQuiz } from "./QuizContext";
+import s from "./layout.module.css";
+import PrimaryButton from "./_ui/PrimaryButton";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -16,8 +18,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 function Shell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const lastSeg = pathname.split("/").pop() || "step-age-range";
-  const currentKey = kebabToCamel(lastSeg) as StepKey;
+
+  const afterQuiz = pathname.split("/quiz")[1] || "";
+  const seg = afterQuiz.split("/").filter(Boolean)[0] || "step-age-range";
+  const currentKey = kebabToCamel(seg) as StepKey;
 
   const { isAnswered } = useQuiz();
 
@@ -26,10 +30,6 @@ function Shell({ children }: { children: React.ReactNode }) {
   const prev = prevKey(currentKey);
   const next = nextKey(currentKey);
 
-  function goPrev() {
-    !prev ? router.push("/") : router.push(pathOf(prev));
-  }
-
   function goNext() {
     if (!next) return;
     if (!isAnswered(currentKey)) return;
@@ -37,139 +37,35 @@ function Shell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <Wrap>
-      <Container>
-        <Header>
-          <BackBtn onClick={() => goPrev()}>
+    <div className={s.wrap}>
+      <div className={s.container}>
+        <header className={s.header}>
+          {/* Back как ссылка: если нет prev — уводим на "/" */}
+          <Link href={prev ? pathOf(prev) : "/"} className={s.backBtn} aria-label='Back'>
             <img src='/images/back-arrow.svg' alt='' />
-          </BackBtn>
-          <Logo>
+          </Link>
+
+          <div className={s.logo}>
             <img src='/images/logo.png' alt='' />
-          </Logo>
-          <Meta>
+          </div>
+
+          <p className={s.meta}>
             {idx + 1}/{ORDER.length}
-          </Meta>
-        </Header>
+          </p>
+        </header>
 
-        <Progress>
-          <Bar>
-            <Fill style={{ width: `${progress}%` }} />
-          </Bar>
-        </Progress>
+        <div className={s.progress}>
+          <div className={s.bar}>
+            <i className={s.fill} style={{ width: `${progress}%` }} />
+          </div>
+        </div>
 
-        <Card>{children}</Card>
-      </Container>
-      <BtnPrimary onClick={goNext} disabled={!isAnswered(currentKey)}>
+        <main className={s.card}>{children}</main>
+      </div>
+
+      <PrimaryButton className={s.btnPrimary} onClick={goNext} disabled={!isAnswered(currentKey) || !next}>
         Next
-      </BtnPrimary>
-    </Wrap>
+      </PrimaryButton>
+    </div>
   );
 }
-
-const Wrap = styled.div`
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 16px;
-  max-width: 1032px;
-  margin: 0 auto;
-`;
-const Container = styled.div`
-  width: 100%;
-`;
-const Header = styled.header`
-  padding: 16px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-const BackBtn = styled.button`
-  border: none;
-  background: transparent;
-  color: ${({ theme }) => theme.colors.muted};
-  font-size: 16px;
-  cursor: pointer;
-  width: 16px;
-  height: 16px;
-
-  img {
-    width: 100%;
-    height: 100%;
-  }
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.primary};
-  }
-`;
-const Logo = styled.div`
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  span {
-    color: ${({ theme }) => theme.colors.primary};
-  }
-
-  img {
-    width: 120px;
-  }
-`;
-const Progress = styled.div`
-  margin-bottom: 24px;
-`;
-const Bar = styled.div`
-  height: 5px;
-  background: #e8e8e8;
-  border-radius: 999px;
-  overflow: hidden;
-`;
-const Fill = styled.i`
-  display: block;
-  height: 100%;
-  background: ${({ theme }) => theme.colors.primary};
-`;
-const Meta = styled.p`
-  margin: 8px 0 0;
-  color: ${({ theme }) => theme.colors.muted};
-  font-size: 14px;
-`;
-const Card = styled.main`
-  padding: 16px 0;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 500px;
-`;
-
-const Btn = styled.button`
-  background: #222642;
-  color: #e7eaf6;
-  padding: 10px 16px;
-  text-decoration: none;
-  max-width: 350px;
-  width: 100%;
-  margin: 0 auto 24px auto;
-
-  align-items: center;
-  border-radius: 8px;
-  display: flex;
-  font-weight: 500;
-  justify-content: center;
-  letter-spacing: 0.14px;
-  border: 0px;
-  cursor: pointer;
-  font-size: 20px;
-  line-height: 28px;
-  padding: 14px 16px;
-`;
-
-const BtnPrimary = styled(Btn)`
-  background: ${({ theme }) => theme.colors.primaryButtons};
-  border-color: transparent;
-  color: ${({ theme }) => theme.colors.textWhite};
-  font-weight: 600;
-  width: 100%;
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-`;

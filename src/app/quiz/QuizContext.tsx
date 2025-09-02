@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { StepKey } from "./schema";
 import { QUIZ } from "./schema";
 
-type Answers = Record<string, any>; // можно сузить по полям, если хочешь строгость
+type Answers = Record<string, any>;
 
 type Ctx = {
   answers: Answers;
@@ -13,20 +13,34 @@ type Ctx = {
 };
 
 const QuizCtx = createContext<Ctx | null>(null);
-const KEY = "quizAnswers";
+
+// Версионированный ключ — можно поменять v1 -> v2, чтобы сбросить старые сохранённые ответы
+const LS_KEY = "quizAnswers:v1";
+const IS_BROWSER = typeof window !== "undefined";
 
 export function QuizProvider({ children }: { children: React.ReactNode }) {
   const [answers, setAnswers] = useState<Answers>({});
 
+  // Загрузка из localStorage (только в браузере)
   useEffect(() => {
+    if (!IS_BROWSER) return;
     try {
-      const raw = localStorage.getItem(KEY);
-      if (raw) setAnswers(JSON.parse(raw));
+      const raw = localStorage.getItem(LS_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      // Подстрахуемся: в хранилище могли оказаться не-объекты
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+        setAnswers(parsed as Answers);
+      }
     } catch {}
   }, []);
 
+  // Сохранение в localStorage
   useEffect(() => {
-    localStorage.setItem(KEY, JSON.stringify(answers));
+    if (!IS_BROWSER) return;
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify(answers));
+    } catch {}
   }, [answers]);
 
   function setAnswer<K extends string>(key: K, value: Answers[K]) {
@@ -35,18 +49,19 @@ export function QuizProvider({ children }: { children: React.ReactNode }) {
 
   function toggleFromArray(key: string, value: string) {
     setAnswers((prev) => {
-      const arr = new Set<string>(Array.isArray(prev[key]) ? prev[key] : []);
-      arr.has(value) ? arr.delete(value) : arr.add(value);
-      return { ...prev, [key]: Array.from(arr) };
+      const set = new Set<string>(Array.isArray(prev[key]) ? (prev[key] as string[]) : []);
+      if (set.has(value)) set.delete(value);
+      else set.add(value);
+      return { ...prev, [key]: Array.from(set) };
     });
   }
 
-  /** ВАЖНО: валидация шага читает правила из конфигурации QUIZ */
+  /** Валидация шага по конфигу QUIZ */
   function isAnswered(key: StepKey): boolean {
     const cfg = QUIZ[key];
     if (!cfg) return true;
 
-    if (cfg.kind === "praise") return true; // 👈 всегда можно идти дальше
+    if (cfg.kind === "praise") return true; // промежуточная страница — всегда разрешаем Next
 
     if (cfg.kind === "single") {
       const v = answers[key];
@@ -59,10 +74,11 @@ export function QuizProvider({ children }: { children: React.ReactNode }) {
       return arr.length > 0;
     }
 
-    // if (cfg.kind === "input") {
-    //   if (cfg.validate) return cfg.validate(v);
-    //   return !!v; // по умолчанию не пусто
-    // }
+    if (cfg.kind === "input") {
+      const v = answers[key];
+      if (cfg.validate) return cfg.validate(v);
+      return v != null && String(v).trim() !== "";
+    }
 
     return true;
   }

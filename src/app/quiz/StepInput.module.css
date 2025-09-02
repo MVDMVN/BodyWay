@@ -1,0 +1,77 @@
+.field {
+  margin: 12px 0 16px;
+  display: grid;
+  gap: 8px;
+}
+
+.label {
+  font-weight: 600;
+}
+
+.inputWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #dcdcdc;
+  background: #fff;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 20px;
+  outline: none;
+}
+
+.input:focus {
+  border-color: var(--primary-buttons);
+  box-shadow: 0 0 0 3px rgba(0, 133, 122, 0.12);
+}
+
+.suffix {
+  position: absolute;
+  font-size: 17px;
+  left: 46px;
+  color: var(--text);
+  pointer-events: none;
+}
+
+.tip {
+  margin-top: 14px;
+  padding: 14px 16px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: #e9f3ff;
+  color: #223;
+  border-radius: 12px;
+  border: 1px solid #dcdcdc;
+}
+
+.tipIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.tipTitle {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: normal;
+  line-height: 24px;
+  text-transform: none;
+  margin-bottom: 4px;
+  color: #757575;
+}
+
+.tipText {
+  opacity: 0.9;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 18px;
+  text-transform: none;
+}

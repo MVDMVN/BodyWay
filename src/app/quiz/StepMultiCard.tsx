@@ -2,56 +2,63 @@
 import { useEffect, useState, useMemo } from "react";
 import { useQuiz } from "../quiz/QuizContext";
 import { QUIZ, type StepKey } from "../quiz/schema";
-import { Title, List, Opt, Img } from "./QuizCardUI";
+import u from "./quiz-ui.module.css";
+import s from "./StepMulti.module.css";
 
 type Props = { stepKey: StepKey };
 
 export default function StepMultiCard({ stepKey }: Props) {
   const { answers, setAnswer } = useQuiz();
 
-  // текущее значение шага — массив строк
   const selected = (answers[stepKey] as string[] | undefined) ?? [];
   const cfg = QUIZ[stepKey];
 
-  // ⛔ если это praise (или input), у него нет options — ничего не рендерим
-  if (cfg.kind !== "single" && cfg.kind !== "multi") {
-    return null;
-  }
+  if (cfg.kind !== "single" && cfg.kind !== "multi") return null;
 
-  // получаем gender из localStorage
   const [gender, setGender] = useState<"male" | "female">("female");
   useEffect(() => {
     try {
-      const gender = localStorage.getItem("gender");
-      if (gender === "male" || gender === "female") setGender(gender);
+      const g = localStorage.getItem("gender");
+      if (g === "male" || g === "female") setGender(g);
     } catch {}
   }, []);
 
-  // массив опций для текущего пола
-  const options = useMemo(() => {
-    return cfg.options[gender];
-  }, [cfg.options, gender]);
+  const options = useMemo(() => cfg.options[gender], [cfg.options, gender]);
 
-  // переключение элемента в массиве
   function toggle(value: string) {
     setAnswer(stepKey, selected.includes(value) ? selected.filter((v) => v !== value) : [...selected, value]);
   }
 
+  const needMin = cfg.kind === "multi" && typeof cfg.min === "number";
+  const notEnough = needMin && selected.length < (cfg.min as number);
+
   return (
     <>
-      <Title>{cfg.title}</Title>
+      <h1 className={u.title}>{cfg.title}</h1>
+      {"description" in cfg && cfg.description && <p className={u.description}>{cfg.description}</p>}
 
-      <List>
+      <div className={u.list}>
         {options.map((item) => {
           const active = selected.includes(item.value);
           return (
-            <Opt key={item.value} $active={active} onClick={() => toggle(item.value)}>
+            <button
+              key={item.value}
+              className={`${u.opt} ${active ? u.optActive : ""}`}
+              onClick={() => toggle(item.value)}
+              type='button'>
               {item.label}
-              {item.image && <Img src={item.image} alt={item.label} />}
-            </Opt>
+              {item.image && <img className={u.img} src={item.image} alt={item.label} />}
+            </button>
           );
         })}
-      </List>
+      </div>
+
+      {needMin && notEnough && (
+        <p className={s.minHint}>
+          Choose at least {cfg.min}
+          {cfg.min === 1 ? "" : " options"} (selected: {selected.length})
+        </p>
+      )}
     </>
   );
 }

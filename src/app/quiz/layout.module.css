@@ -1,0 +1,121 @@
+.wrap {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  max-width: 1032px;
+  margin: 0 auto;
+}
+
+.container {
+  width: 100%;
+}
+
+.header {
+  padding: 16px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* BackBtn */
+.backBtn {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 16px;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+}
+.backBtn img {
+  width: 100%;
+  height: 100%;
+}
+.backBtn:hover {
+  color: var(--primary);
+}
+
+/* Logo */
+.logo {
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+.logo span {
+  color: var(--primary);
+}
+.logo img {
+  width: 120px;
+}
+
+/* Progress */
+.progress {
+  margin-bottom: 24px;
+}
+.bar {
+  height: 5px;
+  background: var(--primary-bg);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.fill {
+  display: block;
+  height: 100%;
+  background: var(--primary);
+}
+
+/* Meta */
+.meta {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* Card */
+.card {
+  padding: 16px 0;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Btn / BtnPrimary */
+.btn {
+  /* базовые стили (как в твоём Btn) — оставлены на случай переисп. */
+  background: #222642;
+  color: #e7eaf6;
+  padding: 10px 16px;
+  text-decoration: none;
+  max-width: 350px;
+  width: 100%;
+  margin: 0 auto 24px auto;
+
+  align-items: center;
+  border-radius: 8px;
+  display: flex;
+  font-weight: 500;
+  justify-content: center;
+  letter-spacing: 0.14px;
+  border: 0;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 28px;
+  padding: 14px 16px; /* дублирую как в исходнике */
+}
+
+/* конкретная кнопка Next */
+.btnPrimary {
+  composes: btn;
+  background: var(--primary-buttons);
+  border-color: transparent;
+  color: var(--text-white);
+  font-weight: 600;
+  width: 100%;
+}
+.btnPrimary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

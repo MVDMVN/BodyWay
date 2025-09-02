@@ -1,0 +1,74 @@
+:root {
+  --panel: #151935;
+  --border: #2a2f49;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.withSide {
+}
+
+.sideWrapper {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.sideCol {
+}
+
+.sideImg {
+  width: 160px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: var(--shadow);
+  background: var(--panel);
+}
+
+.contentCol {
+  width: 100%;
+}
+
+.tip {
+  margin-top: 14px;
+  padding: 14px 16px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: #e9f3ff;
+  color: #223;
+  border-radius: 12px;
+  transition: 0.5s all;
+}
+
+.tipIcon {
+  width: 22px;
+  height: 22px;
+}
+
+.tipTitle {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: normal;
+  line-height: 24px;
+  text-transform: none;
+  color: #757575;
+}
+
+.tipText {
+  opacity: 0.9;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 18px;
+  text-transform: none;
+}
+
+.tipNote {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 18px;
+  text-transform: none;
+}

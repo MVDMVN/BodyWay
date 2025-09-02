@@ -10,18 +10,31 @@ export type StepKey =
   | "stepPraise"
   | "stepDaytimeActivity"
   | "stepPerfectWeight"
-  | "stepWorkout"; // добавляйте сюда новые ключи
+  | "stepWorkout"
+  | "stepEnergyLevel"
+  | "stepHeight"
+  | "stepWeight"
+  | "stepWeightGoal"
+  | "stepAge"; // добавляйте сюда новые ключи
 
 export type OptionDetail = {
   value: string;
   label: string;
   image?: string;
   icon?: string;
+  group?: string;
 };
 
 export type GenderOptions = {
   male: OptionDetail[];
   female: OptionDetail[];
+};
+
+export type TooltipBlock = {
+  title: string;
+  text?: string;
+  note?: string;
+  iconSrc?: string;
 };
 
 /** Описание одного шага */
@@ -33,11 +46,11 @@ export type StepConfig =
       sideImageMale?: string;
       sideImageFemale?: string;
       options: GenderOptions;
+      validate?: (value: string | undefined) => boolean;
+      tooltipByGroup?: Record<string, TooltipBlock>;
       tooltipTitle?: string;
       tooltipText?: string;
       tooltipIcon?: string;
-      tooltipNote?: string;
-      validate?: (value: string | undefined) => boolean;
     }
   | {
       kind: "multi";
@@ -52,15 +65,19 @@ export type StepConfig =
       description?: string;
       imageMale: string;
       imageFemale: string;
+    }
+  | {
+      kind: "input";
+      title: string;
+      description?: string;
+      placeholder?: string;
+      validate?: (value: string | number | undefined) => boolean;
+      pattern?: RegExp;
+      unit?: string; // на будущее можно расширить
+      tooltipTitle?: string;
+      tooltipText?: string;
+      tooltipIcon?: string;
     };
-// | {
-//     kind: "input";
-//     title: string;
-//     description?: string;
-//     placeholder?: string;
-//     validate?: (value: string | number | undefined) => boolean;
-//     pattern?: RegExp; // например, /^\d{2,3}$/
-//   };
 
 /** Единый источник информации для всего объекта */
 export const QUIZ: Record<StepKey, StepConfig> = {
@@ -227,28 +244,178 @@ export const QUIZ: Record<StepKey, StepConfig> = {
   },
   stepWorkout: {
     kind: "single",
-    title: "When was the last time you were content with your body weight?",
-    sideImageMale: "/images/step-perfect-weight/male/perfect-weight-male.webp",
-    sideImageFemale: "/images/step-perfect-weight/female/perfect-weight-female.webp",
+    title: "Do you workout?",
+    description: "Workouts boost your weight loss results. We can help you make it a daily habit.",
     options: {
       male: [
-        { value: "Less than a year ago", label: "Less than a year ago" },
-        { value: "1-3 years ago", label: "1-3 years ago" },
-        { value: "More than 3 years ago", label: "1-3 years ago" },
-        { value: "Never", label: "Never" },
+        { value: "No, i don't", label: "No, i don't", group: "g1", icon: "/images/step-do-you-workout/male/not.svg" },
+        {
+          value: "Only walks",
+          label: "Obly walks",
+          group: "g1",
+          icon: "/images/step-do-you-workout/male/only-walk.svg",
+        },
+        {
+          value: "1-2 times a week",
+          label: "1-2 times a wekk",
+          group: "g2",
+          icon: "/images/step-do-you-workout/male/1-2-times.svg",
+        },
+        {
+          value: "3-5 times a week",
+          label: "3-5 times a wekk",
+          group: "g2",
+          icon: "/images/step-do-you-workout/male/3-5-times.svg",
+        },
+        {
+          value: "More than 5 times a week",
+          label: "More than 5 times a week",
+          group: "g2",
+          icon: "/images/step-do-you-workout/male/more-5.svg",
+        },
       ],
       female: [
-        { value: "Less than a year ago", label: "Less than a year ago" },
-        { value: "1-3 years ago", label: "1-3 years ago" },
-        { value: "More than 3 years ago", label: "1-3 years ago" },
-        { value: "Never", label: "Never" },
+        { value: "No, i don't", label: "No, i don't", group: "g1", icon: "/images/step-do-you-workout/female/not.svg" },
+        {
+          value: "Only walks",
+          label: "Obly walks",
+          group: "g1",
+          icon: "/images/step-do-you-workout/female/only-walk.svg",
+        },
+        {
+          value: "1-2 times a week",
+          label: "1-2 times a wekk",
+          group: "g2",
+          icon: "/images/step-do-you-workout/female/1-2-times.svg",
+        },
+        {
+          value: "3-5 times a week",
+          label: "3-5 times a wekk",
+          group: "g2",
+          icon: "/images/step-do-you-workout/female/3-5-times.svg",
+        },
+        {
+          value: "More than 5 times a week",
+          label: "More than 5 times a week",
+          group: "g2",
+          icon: "/images/step-do-you-workout/female/more-5.svg",
+        },
       ],
     },
-    tooltipTitle: "Thanks for sharing!",
-    tooltipText:
-      "We learned that a lot of people have faced the same as well. BodyWay has a clear weight loss plan that is easy to follow. Also, the program will help you with motivation during this journey.",
-    tooltipIcon: "💪",
-    tooltipNote: "users of Unimeal who took the quiz",
+    tooltipByGroup: {
+      g1: {
+        title: "37% of users*",
+        text: "responded in the same way. BodyWay will help you create a habit of working out",
+        note: "*users of Unimeal who took the quiz",
+        iconSrc: "💪",
+      },
+      g2: {
+        title: "You’ve worked out more than 62% of users",
+        text: "It will be easier for you to maintain a workout plan",
+        iconSrc: "💪",
+      },
+    },
+  },
+  stepEnergyLevel: {
+    kind: "single",
+    title: "How tired do you typically feel during the day?",
+    description: "Our weight loss programs help you keep your energy level steady throughout the day.",
+    options: {
+      male: [
+        {
+          value: "I feel tired all day long",
+          label: "I feel tired all day long",
+          icon: "/images/step-energy-level/male/tired.svg",
+        },
+        {
+          value: "I feel tired before meals",
+          label: "I feel tired before meals",
+          icon: "/images/step-energy-level/male/meal.svg",
+        },
+        {
+          value: "I have a couple of afternoon yawns",
+          label: "I have a couple of afternoon yawns",
+          icon: "/images/step-energy-level/male/yawns.svg",
+        },
+        {
+          value: "I'm a ball of fire all day long",
+          label: "I'm a ball of fire all day long",
+          icon: "/images/step-energy-level/male/fire.svg",
+        },
+      ],
+      female: [
+        {
+          value: "I feel tired all day long",
+          label: "I feel tired all day long",
+          icon: "/images/step-energy-level/female/tired.svg",
+        },
+        {
+          value: "I feel tired before meals",
+          label: "I feel tired before meals",
+          icon: "/images/step-energy-level/female/meal.svg",
+        },
+        {
+          value: "I have a couple of afternoon yawns",
+          label: "I have a couple of afternoon yawns",
+          icon: "/images/step-energy-level/female/yawns.svg",
+        },
+        {
+          value: "I'm a ball of fire all day long",
+          label: "I'm a ball of fire all day long",
+          icon: "/images/step-energy-level/female/fire.svg",
+        },
+      ],
+    },
+  },
+  stepHeight: {
+    kind: "input",
+    title: "What is your height?",
+    description: "Height (cm)",
+    placeholder: "__",
+    unit: "cm",
+    validate: (v) => {
+      const n = typeof v === "number" ? v : Number(String(v).replace(/[^\d]/g, ""));
+      return Number.isFinite(n) && n >= 120 && n <= 230;
+    },
+    tooltipTitle: "Calculating your body mass index",
+    tooltipText: "BMI is widely used as a risk indicator for the development or prevalence of several health issues.",
+    tooltipIcon: "☝️",
+  },
+  stepWeight: {
+    kind: "input",
+    title: "What is your current weight?",
+    description: "Current weight (kg)",
+    placeholder: "__",
+    unit: "kg",
+    validate: (v) => {
+      const n = typeof v === "number" ? v : Number(String(v).replace(/[^\d]/g, ""));
+      return Number.isFinite(n) && n >= 60 && n <= 200;
+    },
+    tooltipIcon: "☝️",
+  },
+  stepWeightGoal: {
+    kind: "input",
+    title: "What is your desired weight?",
+    description: "Goal weight kg",
+    placeholder: "__",
+    unit: "kg",
+    validate: (v) => {
+      const n = typeof v === "number" ? v : Number(String(v).replace(/[^\d]/g, ""));
+      return Number.isFinite(n) && n >= 60 && n <= 200;
+    },
+  },
+  stepAge: {
+    kind: "input",
+    title: "What is your age?",
+    description: "Age",
+    placeholder: "0 y.o.",
+    validate: (v) => {
+      const n = typeof v === "number" ? v : Number(String(v).replace(/[^\d]/g, ""));
+      return Number.isFinite(n) && n >= 18 && n <= 80;
+    },
+    tooltipTitle: "We ask your age to create your personal plan",
+    tooltipText: "Older people tend to have more body fat than younger people with the same BMI.",
+    tooltipIcon: "☝️",
   },
 };
 
@@ -263,6 +430,11 @@ export const ORDER: StepKey[] = [
   "stepDaytimeActivity",
   "stepPerfectWeight",
   "stepWorkout",
+  "stepEnergyLevel",
+  "stepHeight",
+  "stepWeight",
+  "stepWeightGoal",
+  "stepAge",
 ];
 
 export const pathOf = (key: StepKey) => `/quiz/${camelToKebab(key)}`;
