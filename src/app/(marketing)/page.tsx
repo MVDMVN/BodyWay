@@ -12,6 +12,9 @@ import {
   QuizButtonsWrapper,
   MobileGuysBlock,
   TabletGuysBlock,
+  Logo,
+  Footer,
+  FooterText,
 } from "@/app/Components/UI";
 
 function setGender(gender: "male" | "female") {
@@ -27,9 +30,9 @@ export default function Page() {
     <>
       <Header>
         <div className='container row'>
-          <div className='logo'>
-            YourHealthy<span>Plan</span>
-          </div>
+          <Logo>
+            <img src='/images/logo.png' alt='' />
+          </Logo>
         </div>
       </Header>
 
@@ -39,10 +42,10 @@ export default function Page() {
           <GirlElement />
           <ContentBlock>
             <ContentWrapper>
-              <p>
+              <h1>
                 A new scientific weight loss method developed by experts at the Institute of Health - 100% guaranteed
                 results! Based on the principles of a healthy lifestyle and behavior change.
-              </p>
+              </h1>
               <p className='content-description'>
                 Take our Quiz to get a personal meal plan and workout program to achieve your weight goals!
               </p>
@@ -64,6 +67,12 @@ export default function Page() {
             </TabletGuysBlock>
           </ContentBlock>
         </SectionHeader>
+        <Footer>
+          <FooterText>
+            *Cleveland Clinic Bariatric & Metabolic Institute Evidence-Based: Clinical Research DiRECT (Lancet, 2025) -
+            Total Diet Replacement (TDR)
+          </FooterText>
+        </Footer>
       </main>
     </>
   );

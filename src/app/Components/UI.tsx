@@ -10,6 +10,7 @@ export const Header = styled.header`
   .row {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 24px;
     min-height: 64px;
   }
@@ -28,11 +29,22 @@ export const Header = styled.header`
   }
 `;
 
+export const Logo = styled.div`
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  span {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+
+  img {
+    width: 140px;
+  }
+`;
+
 export const SectionHeader = styled.section<{ alt?: boolean }>`
   display: flex;
   position: relative;
   background: #faf2e8;
-  margin-bottom: 62px;
   padding: 24px 16px;
 
   &:before {
@@ -65,7 +77,6 @@ export const SectionHeader = styled.section<{ alt?: boolean }>`
 
   @media (min-width: 1280px) {
     padding: 40px 0 0;
-    margin-bottom: 124px;
     background-image: url(images/leaf2.svg), url(images/strawberry.svg), url(images/pumpkin.svg),
       url(images/broccoli2.svg), url(images/strawberry.svg), url(images/banana.svg), url(images/currant.svg),
       url(images/carrot.svg);
@@ -115,6 +126,7 @@ export const ContentBlock = styled.div`
   margin: 0 auto;
 
   &:after {
+    display: none;
     content: "";
     position: absolute;
     left: 50%;
@@ -149,7 +161,7 @@ export const ContentBlock = styled.div`
   }
 
   &:after {
-    bottom: -100px;
+    bottom: -20px;
   }
 `;
 
@@ -281,4 +293,16 @@ export const TabletGuysBlock = styled.div`
   @media (min-width: 1280px) {
     display: none;
   }
+`;
+
+export const Footer = styled.footer`
+  background-color: rgb(250, 242, 232);
+  margin-bottom: 62px;
+  padding: 60px 0;
+  text-align: center;
+`;
+
+export const FooterText = styled.p`
+  font-size: 16px;
+  line-height: 20px;
 `;
