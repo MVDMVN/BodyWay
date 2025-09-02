@@ -9,7 +9,8 @@ export type StepKey =
   | "stepTargetZones"
   | "stepPraise"
   | "stepDaytimeActivity"
-  | "stepPerfectWeight"; // добавляйте сюда новые ключи
+  | "stepPerfectWeight"
+  | "stepWorkout"; // добавляйте сюда новые ключи
 
 export type OptionDetail = {
   value: string;
@@ -261,6 +262,7 @@ export const ORDER: StepKey[] = [
   "stepPraise",
   "stepDaytimeActivity",
   "stepPerfectWeight",
+  "stepWorkout",
 ];
 
 export const pathOf = (key: StepKey) => `/quiz/${camelToKebab(key)}`;
