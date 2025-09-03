@@ -21,7 +21,8 @@ export type StepKey =
   | "stepSleep"
   | "stepWater"
   | "stepGraphic"
-  | "stepProgress"; // добавляйте сюда новые ключи
+  | "stepProgress"
+  | "stepEmail"; // добавляйте сюда новые ключи
 
 export type OptionDetail = {
   value: string;
@@ -49,7 +50,7 @@ type XY = { top: number; left: number };
 type StepUi = {
   hideHeader?: boolean; // прячет всю верхнюю шапку (стрелка, лого, счетчик)
   hideNextBtn?: boolean; // прячет кнопку Next внизу
-  width?: string;
+  width?: string; // можно задать ширину и по условиню давать эту или оставлять исходную
 };
 
 /** Описание одного шага */
@@ -130,6 +131,15 @@ export type StepConfig =
         avatar?: string;
         badge?: string; // например “★★★★★” или “Verified”
       }>;
+      ui?: StepUi;
+    }
+  | {
+      kind: "email";
+      title: string;
+      label?: string;
+      placeholder?: string;
+      description?: string;
+      descriptionIcon?: string;
       ui?: StepUi;
     };
 
@@ -683,6 +693,16 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     ],
     ui: { hideHeader: true, hideNextBtn: true, width: "1000px" },
   },
+  stepEmail: {
+    kind: "email",
+    title: "Enter your email to get your personal Weight-Loss plan!",
+    label: "Your email",
+    placeholder: "your@email.com",
+    description:
+      "We respect your privacy and use your email only to send you the Unimeal program and other important emails. You won't receive spam.",
+    descriptionIcon: "/images/email/email-desc-icon.svg",
+    ui: { hideNextBtn: true, width: "720px" },
+  },
 };
 
 /** Порядок шагов: меняем ЗДЕСЬ — меняется везде */
@@ -707,6 +727,7 @@ export const ORDER: StepKey[] = [
   "stepWater",
   "stepGraphic",
   "stepProgress",
+  "stepEmail",
 ];
 
 export const pathOf = (key: StepKey) => `/quiz/${camelToKebab(key)}`;

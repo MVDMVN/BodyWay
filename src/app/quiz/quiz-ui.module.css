@@ -2,7 +2,7 @@
 .title {
   font-size: 28px;
   line-height: 32px;
-  margin: 0 0 12px;
+  margin: 0 0 16px;
 }
 
 /* Описание шага */
@@ -93,8 +93,7 @@
 @media (max-width: 768px) {
   .title {
     font-size: 22px;
-    line-height: 24px;
-    margin: 0 0 8px;
+    line-height: 28px;
   }
 
   .description {

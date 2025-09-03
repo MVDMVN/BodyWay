@@ -39,6 +39,7 @@ function Shell({ children }: { children: React.ReactNode }) {
 
   const hideHeader = cfg?.ui?.hideHeader === true;
   const hideNextBtn = cfg?.ui?.hideNextBtn === true;
+  const maxWidth = cfg?.ui?.width ?? cfg?.ui?.width ?? "500px";
 
   return (
     <div className={s.wrap}>
@@ -78,7 +79,7 @@ function Shell({ children }: { children: React.ReactNode }) {
           </div>
         )}
 
-        <main className={s.card} style={{ maxWidth: cfg?.ui?.width ?? "500px" }}>
+        <main className={s.card} style={{ maxWidth: maxWidth ?? "500px" }}>
           {children}
         </main>
       </div>
