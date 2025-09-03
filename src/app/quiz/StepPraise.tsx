@@ -15,9 +15,7 @@ export default function StepPraise({ stepKey }: Props) {
     try {
       const g = localStorage.getItem("gender");
       if (g === "male" || g === "female") setGender(g);
-    } catch {
-      /* noop */
-    }
+    } catch {}
   }, []);
 
   // alt-тексты (если нет в конфиге — используем заголовок)
@@ -39,7 +37,7 @@ export default function StepPraise({ stepKey }: Props) {
           alt={altMale}
           loading='lazy'
           decoding='async'
-          sizes='(max-width: 600px) 100vw, 350px'
+          sizes='(max-width: 250px) 100vw, 250px'
           fetchPriority='low'
         />
       )}
@@ -51,7 +49,7 @@ export default function StepPraise({ stepKey }: Props) {
           alt={altFemale}
           loading='lazy'
           decoding='async'
-          sizes='(max-width: 600px) 100vw, 350px'
+          sizes='(max-width: 250px) 100vw, 250px'
           fetchPriority='low'
         />
       )}

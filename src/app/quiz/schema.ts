@@ -15,7 +15,10 @@ export type StepKey =
   | "stepHeight"
   | "stepWeight"
   | "stepWeightGoal"
-  | "stepAge"; // добавляйте сюда новые ключи
+  | "stepAge"
+  | "stepSecondPraise"
+  | "stepTend"
+  | "stepSleep"; // добавляйте сюда новые ключи
 
 export type OptionDetail = {
   value: string;
@@ -57,6 +60,7 @@ export type StepConfig =
       title: string;
       description?: string;
       options: GenderOptions;
+      hasUltiButton: boolean;
       min?: number; // минимум выбранных ответов для прохода дальше
     }
   | {
@@ -147,6 +151,7 @@ export const QUIZ: Record<StepKey, StepConfig> = {
   stepTargetZones: {
     kind: "multi",
     title: "Choose your target zones",
+    hasUltiButton: false,
     options: {
       male: [
         { value: "Muscle Gain", label: "Muscle Gain", image: "/images/step-goal/male/swole.webp" },
@@ -417,6 +422,84 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     tooltipText: "Older people tend to have more body fat than younger people with the same BMI.",
     tooltipIcon: "☝️",
   },
+  stepSecondPraise: {
+    kind: "praise",
+    title: "Great job! 👏",
+    description: "Most people quit halfway, but you’re still going strong.",
+    imageMale: "/images/step-second-praise/male.webp",
+    imageFemale: "/images/step-second-praise/female.webp",
+  },
+  stepTend: {
+    kind: "multi",
+    title: "Select all that you tend to do:",
+    hasUltiButton: true,
+    options: {
+      male: [
+        { value: "I eat late at night", label: "I eat late at night", icon: "/images/step-tend/male/eat-night.svg" },
+        {
+          value: "I can't give up eating sweets",
+          label: "I can't give up eating sweets",
+          icon: "/images/step-tend/male/sweets.svg",
+        },
+        {
+          value: "I love soft drinks",
+          label: "I love soft drinks",
+          icon: "/images/step-tend/male/soft-drinks.svg",
+        },
+        {
+          value: "I consume hard drinks from time to time",
+          label: "I consume hard drinks from time to time",
+          icon: "/images/step-tend/male/hard-drinks.svg",
+        },
+        {
+          value: "I love fatty or salty foods",
+          label: "I love fatty or salty foods",
+          icon: "/images/step-tend/male/salty.svg",
+        },
+      ],
+      female: [
+        { value: "I eat late at night", label: "I eat late at night", icon: "/images/step-tend/female/eat-night.svg" },
+        {
+          value: "I can't give up eating sweets",
+          label: "I can't give up eating sweets",
+          icon: "/images/step-tend/female/sweets.svg",
+        },
+        {
+          value: "I love soft drinks",
+          label: "I love soft drinks",
+          icon: "/images/step-tend/female/soft-drinks.svg",
+        },
+        {
+          value: "I consume hard drinks from time to time",
+          label: "I consume hard drinks from time to time",
+          icon: "/images/step-tend/female/hard-drinks.svg",
+        },
+        {
+          value: "I love fatty or salty foods",
+          label: "I love fatty or salty foods",
+          icon: "/images/step-tend/female/salty.svg",
+        },
+      ],
+    },
+  },
+  stepSleep: {
+    kind: "single",
+    title: "How much do you usually sleep?",
+    options: {
+      male: [
+        { value: "Less than 5 hours", label: "Less than 5 hours" },
+        { value: "5-6 hours", label: "5-6 hours" },
+        { value: "7-8 hours", label: "7-8 hours" },
+        { value: "More than 8 hours", label: "More than 8 hours" },
+      ],
+      female: [
+        { value: "Less than 5 hours", label: "Less than 5 hours" },
+        { value: "5-6 hours", label: "5-6 hours" },
+        { value: "7-8 hours", label: "7-8 hours" },
+        { value: "More than 8 hours", label: "More than 8 hours" },
+      ],
+    },
+  },
 };
 
 /** Порядок шагов: меняем ЗДЕСЬ — меняется везде */
@@ -432,9 +515,12 @@ export const ORDER: StepKey[] = [
   "stepWorkout",
   "stepEnergyLevel",
   "stepHeight",
-  // "stepWeight",
-  // "stepWeightGoal",
-  // "stepAge",
+  "stepWeight",
+  "stepWeightGoal",
+  "stepAge",
+  "stepSecondPraise",
+  "stepTend",
+  "stepSleep",
 ];
 
 export const pathOf = (key: StepKey) => `/quiz/${camelToKebab(key)}`;

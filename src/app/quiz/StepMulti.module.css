@@ -1,0 +1,25 @@
+.checkboxWrap {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 12px;
+}
+
+.checkbox {
+  width: 24px;
+  height: 24px;
+}
+
+.label {
+  flex: 1;
+}
+
+.noneBtnWrapper {
+  width: 100%;
+  height: 1px;
+  background-color: var(--primary-bg);
+}
+
+.noneBtn {
+  margin-top: 12px;
+  width: 100%;
+}
