@@ -22,7 +22,8 @@ export type StepKey =
   | "stepWater"
   | "stepGraphic"
   | "stepProgress"
-  | "stepEmail"; // добавляйте сюда новые ключи
+  | "stepEmail"
+  | "stepName"; // добавляйте сюда новые ключи
 
 export type OptionDetail = {
   value: string;
@@ -51,6 +52,7 @@ type StepUi = {
   hideHeader?: boolean; // прячет всю верхнюю шапку (стрелка, лого, счетчик)
   hideNextBtn?: boolean; // прячет кнопку Next внизу
   width?: string; // можно задать ширину и по условиню давать эту или оставлять исходную
+  nextPath?: string; // для перехода на страницу result
 };
 
 /** Описание одного шага */
@@ -90,8 +92,9 @@ export type StepConfig =
       kind: "input";
       title: string;
       description?: string;
+      label?: string;
       placeholder?: string;
-      validate?: (value: string | number | undefined) => boolean;
+      validate?: (value: string | number | undefined) => boolean | string | undefined;
       pattern?: RegExp;
       unit?: string;
       tooltipTitle?: string;
@@ -293,13 +296,13 @@ export const QUIZ: Record<StepKey, StepConfig> = {
       male: [
         { value: "Less than a year ago", label: "Less than a year ago" },
         { value: "1-3 years ago", label: "1-3 years ago" },
-        { value: "More than 3 years ago", label: "1-3 years ago" },
+        { value: "More than 3 years ago", label: "More than 3 years ago" },
         { value: "Never", label: "Never" },
       ],
       female: [
         { value: "Less than a year ago", label: "Less than a year ago" },
         { value: "1-3 years ago", label: "1-3 years ago" },
-        { value: "More than 3 years ago", label: "1-3 years ago" },
+        { value: "More than 3 years ago", label: "More than 3 years ago" },
         { value: "Never", label: "Never" },
       ],
     },
@@ -703,6 +706,32 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     descriptionIcon: "/images/email/email-desc-icon.svg",
     ui: { hideNextBtn: true, width: "720px" },
   },
+  stepName: {
+    kind: "input",
+    title: "What's your name?",
+    label: "Name",
+    placeholder: "Alex",
+    validate: (value: string | number | undefined): boolean | string => {
+      // приводим к строке и чистим пробелы
+      const clean = String(value ?? "").trim();
+
+      if (!clean) {
+        return "Name is required";
+      }
+
+      if (clean.length < 2) {
+        return "Name must be at least 2 characters long";
+      }
+
+      const re = /^[A-Za-zА-Яа-яЁё\s-]+$/;
+      if (!re.test(clean)) {
+        return "Name can only contain letters, spaces, or hyphens";
+      }
+
+      return true;
+    },
+    ui: { hideHeader: true, nextPath: "/result" },
+  },
 };
 
 /** Порядок шагов: меняем ЗДЕСЬ — меняется везде */
@@ -728,6 +757,7 @@ export const ORDER: StepKey[] = [
   "stepGraphic",
   "stepProgress",
   "stepEmail",
+  "stepName",
 ];
 
 export const pathOf = (key: StepKey) => `/quiz/${camelToKebab(key)}`;

@@ -1,0 +1,211 @@
+:root {
+  --primary-50: #00857a;
+  --primary-40: #129c90;
+  --black-0: #fff;
+  --black-5: #f5f5f5;
+  --black-40: #8f8f8f;
+  --black-60: #5c5c5c;
+  --black-80: #292929;
+}
+
+.app {
+  background: var(--black-0);
+  color: var(--black-80);
+  min-height: 100vh;
+}
+
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+  max-width: 856px;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--black-0);
+  border-bottom: 1px solid var(--black-5);
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.logo img {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+
+.btn {
+  border: 0;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 10px 16px;
+  font-size: 16px;
+}
+
+.btnPrimary {
+  background: var(--primary-50);
+  color: var(--black-0);
+}
+.btnPrimary:hover {
+  background: var(--primary-40);
+}
+
+.section {
+  padding: 32px 0;
+}
+.sectionSoft {
+  background: #eaf7f6; /* лёгкий фон блока */
+}
+
+.title {
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+.accent {
+  color: var(--primary-50);
+}
+
+.subtitle {
+  color: var(--black-60);
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+}
+
+/* Before/After */
+.ba {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 16px;
+}
+.baCol {
+  flex: 0 0 auto;
+  width: 155px;
+  text-align: center;
+}
+.baLabel {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.baArrow {
+  display: flex;
+  align-items: center;
+  color: var(--black-60);
+}
+.baArrow svg {
+  width: 40px;
+  height: 40px;
+}
+
+/* Energy “bars” */
+.bars {
+  list-style: none;
+  display: flex;
+  gap: 4px;
+  padding: 0;
+  margin: 12px 0 0 0;
+  justify-content: center;
+}
+.bar {
+  width: 20%;
+  height: 6px;
+  background: var(--black-0);
+  border-radius: 6px;
+  border: 1px solid var(--black-5);
+}
+.barOn {
+  background: #33b3a8; /* зелёная полоса */
+  border-color: #33b3a8;
+}
+
+/* Cards */
+.cards {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) {
+  .cards {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 2px solid var(--black-40);
+  border-radius: 8px;
+  padding: 12px 16px;
+  background: var(--black-0);
+}
+.cardIcon {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+.cardTitle {
+  color: var(--black-60);
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.cardValue {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+/* Checklist */
+.checklist {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) {
+  .checklist {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.check svg {
+  width: 24px;
+  height: 24px;
+  color: var(--primary-50);
+}
+
+/* Money-back */
+.money {
+  text-align: center;
+}
+.moneyBadge {
+  width: 117px;
+  height: 137px;
+  object-fit: contain;
+  margin: 0 auto 8px;
+}
+
+/* Footer */
+.footer {
+  padding: 24px 0 32px;
+  background: var(--black-5);
+  color: var(--black-60);
+  font-size: 12px;
+  text-align: center;
+}

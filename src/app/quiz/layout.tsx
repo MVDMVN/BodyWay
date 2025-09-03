@@ -19,11 +19,12 @@ function Shell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
 
+  // безопасный разбор сегмента шага
   const afterQuiz = pathname.split("/quiz")[1] || "";
   const seg = afterQuiz.split("/").filter(Boolean)[0] || "step-age-range";
   const currentKey = kebabToCamel(seg) as StepKey;
-  const cfg = QUIZ[currentKey];
 
+  const cfg = QUIZ[currentKey];
   const { isAnswered } = useQuiz();
 
   const idx = Math.max(0, ORDER.indexOf(currentKey));
@@ -31,20 +32,37 @@ function Shell({ children }: { children: React.ReactNode }) {
   const prev = prevKey(currentKey);
   const next = nextKey(currentKey);
 
-  function goNext() {
-    if (!next) return;
-    if (!isAnswered(currentKey)) return;
-    router.push(pathOf(next));
-  }
-
   const hideHeader = cfg?.ui?.hideHeader === true;
   const hideNextBtn = cfg?.ui?.hideNextBtn === true;
-  const maxWidth = cfg?.ui?.width ?? cfg?.ui?.width ?? "500px";
+  const maxWidth = cfg?.ui?.width ?? "500px";
+
+  // ✅ Кнопка активна, если шаг валиден И (есть next ИЛИ задан nextPath)
+  const canGoNext = isAnswered(currentKey) && (!!next || !!cfg?.ui?.nextPath);
+
+  function goNext() {
+    // не даём уйти вперёд, если шаг невалиден
+    if (!isAnswered(currentKey)) return;
+
+    // приоритет: явный nextPath из конфигурации (например, переход на /result)
+    if (cfg?.ui?.nextPath) {
+      router.push(cfg.ui.nextPath);
+      return;
+    }
+
+    // иначе — обычная навигация по ORDER
+    if (next) {
+      router.push(pathOf(next));
+      return;
+    }
+
+    // если ни nextPath, ни next — ничего не делаем (краевой случай)
+  }
 
   return (
     <div className={s.wrap}>
       <div className={s.container}>
-        {hideHeader && (
+        {/* Если хочешь прятать шапку ВООБЩЕ — замени блок ниже на: { !hideHeader && (<header>...</header>) } */}
+        {hideHeader ? (
           <header className={s.header}>
             <Link href={prev ? pathOf(prev) : "/"} className={s.backBtn} aria-label='Back'>
               <img src='/images/back-arrow.svg' alt='' />
@@ -53,10 +71,8 @@ function Shell({ children }: { children: React.ReactNode }) {
               <img src='/images/logo.png' alt='' />
             </div>
           </header>
-        )}
-        {!hideHeader && (
+        ) : (
           <header className={s.header}>
-            {/* Back как ссылка: если нет prev — уводим на "/" */}
             <Link href={prev ? pathOf(prev) : "/"} className={s.backBtn} aria-label='Back'>
               <img src='/images/back-arrow.svg' alt='' />
             </Link>
@@ -79,13 +95,13 @@ function Shell({ children }: { children: React.ReactNode }) {
           </div>
         )}
 
-        <main className={s.card} style={{ maxWidth: maxWidth ?? "500px" }}>
+        <main className={s.card} style={{ maxWidth }}>
           {children}
         </main>
       </div>
 
       {!hideNextBtn && (
-        <PrimaryButton className={s.btnPrimary} onClick={goNext} disabled={!isAnswered(currentKey) || !next}>
+        <PrimaryButton className={s.btnPrimary} onClick={goNext} disabled={!canGoNext}>
           Next
         </PrimaryButton>
       )}

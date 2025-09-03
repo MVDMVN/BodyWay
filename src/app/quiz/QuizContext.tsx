@@ -76,8 +76,17 @@ export function QuizProvider({ children }: { children: React.ReactNode }) {
 
     if (cfg.kind === "input") {
       const v = answers[key];
-      if (cfg.validate) return cfg.validate(v);
-      return v != null && String(v).trim() !== "";
+
+      if (typeof cfg.validate === "function") {
+        const res = cfg.validate(v as any);
+        // если валидатор вернул строку — это текст ошибки → невалидно
+        if (typeof res === "string") return false;
+        // если вернул boolean — используем его
+        if (typeof res === "boolean") return res;
+      }
+
+      // по умолчанию: непустое значение
+      return v != null && String(v).trim().length > 0;
     }
 
     return true;
