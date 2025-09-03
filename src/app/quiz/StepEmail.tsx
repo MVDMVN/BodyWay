@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { QUIZ, nextKey, pathOf, type StepKey } from "./schema";
 import { useQuiz } from "./QuizContext";
 import u from "./quiz-ui.module.css";
@@ -14,7 +14,6 @@ const WEB_APP_URL = process.env.NEXT_PUBLIC_SHEETS_WEBAPP_URL || "";
 
 export default function StepEmail({ stepKey }: Props) {
   const router = useRouter();
-  const search = useSearchParams();
 
   const { answers, setAnswer } = useQuiz();
   const cfg = QUIZ[stepKey];
@@ -32,12 +31,13 @@ export default function StepEmail({ stepKey }: Props) {
   const valid = EMAIL_RE.test(email.trim());
   const next = nextKey(stepKey);
 
-  // собираем UTM и любые query
   const utm = useMemo(() => {
+    if (typeof window === "undefined") return {};
+    const sp = new URLSearchParams(window.location.search);
     const obj: Record<string, string> = {};
-    search.forEach((v, k) => (obj[k] = v));
+    sp.forEach((v, k) => (obj[k] = v));
     return obj;
-  }, [search]);
+  }, []);
 
   async function submit() {
     setError(null);
