@@ -61,7 +61,7 @@ export function QuizProvider({ children }: { children: React.ReactNode }) {
     const cfg = QUIZ[key];
     if (!cfg) return true;
 
-    if (cfg.kind === "praise") return true; // промежуточная страница — всегда разрешаем Next
+    if (cfg.kind === "praise" || cfg.kind === "graphic") return true; // промежуточная страница — всегда разрешаем Next
 
     if (cfg.kind === "single") {
       const v = answers[key];

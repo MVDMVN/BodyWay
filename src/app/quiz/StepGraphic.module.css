@@ -1,0 +1,70 @@
+.goalWrap {
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+  width: max-content;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.goalValue {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.3;
+  color: var(--text);
+}
+
+.goalUnderline {
+  display: block;
+  width: 100%; /* можно подогнать под макет */
+  height: 7px;
+  margin-top: 6px;
+  background: #fef0c2;
+  border-radius: 999px;
+}
+
+.chartWrap {
+  position: relative;
+  display: inline-block;
+  max-width: 640px;
+  width: 100%;
+}
+
+.chartImg {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 16px;
+}
+
+.chartWrap .bubble {
+  position: absolute;
+  background-color: transparent;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--text-white);
+  border-radius: 12px;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+
+.chartWrap .bubbleStart {
+  background-color: transparent;
+}
+
+.chartWrap .bubbleEnd {
+  background-color: transparent;
+}
+
+.note {
+  margin-top: 14px;
+  font-size: 14px;
+  color: #667085;
+}
+
+@media (max-width: 768px) {
+  .chartWrap .bubble {
+    font-size: 12px;
+  }
+}

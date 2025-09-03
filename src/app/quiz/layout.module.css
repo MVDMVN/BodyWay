@@ -43,12 +43,16 @@
 .logo {
   font-weight: 700;
   letter-spacing: 0.3px;
+  display: flex;
 }
 .logo span {
   color: var(--primary);
 }
 .logo img {
   width: 120px;
+}
+.logoCenter {
+  margin: 0 auto;
 }
 
 /* Progress */
@@ -118,4 +122,10 @@
 .btnPrimary:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 12px 0;
+  }
 }

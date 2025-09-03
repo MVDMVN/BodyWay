@@ -103,7 +103,10 @@ export default function StepSingleCard({ stepKey }: Props) {
                   className={`${u.opt} ${active ? u.optActive : ""}`}
                   onClick={() => choose(item.value)}
                   type='button'>
-                  {item.label}
+                  <div className={item.labelDesc ? u.withDesc : u.noDesc}>
+                    <p className={u.label}>{item.label}</p>
+                    {item.labelDesc && <span className={u.labelDesc}>{item.labelDesc}</span>}
+                  </div>
                   {item.image && <img className={u.img} src={item.image} alt={item.label} />}
                   {item.icon && <img className={u.imgIcon} src={item.icon} alt={item.label} />}
                 </button>

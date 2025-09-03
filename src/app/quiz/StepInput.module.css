@@ -64,7 +64,7 @@
   line-height: 24px;
   text-transform: none;
   margin-bottom: 4px;
-  color: #757575;
+  color: var(--text-light-gray);
 }
 
 .tipText {

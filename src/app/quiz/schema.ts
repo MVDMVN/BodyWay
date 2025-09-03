@@ -18,11 +18,15 @@ export type StepKey =
   | "stepAge"
   | "stepSecondPraise"
   | "stepTend"
-  | "stepSleep"; // добавляйте сюда новые ключи
+  | "stepSleep"
+  | "stepWater"
+  | "stepGraphic"
+  | "stepProgress"; // добавляйте сюда новые ключи
 
 export type OptionDetail = {
   value: string;
   label: string;
+  labelDesc?: string;
   image?: string;
   icon?: string;
   group?: string;
@@ -40,6 +44,14 @@ export type TooltipBlock = {
   iconSrc?: string;
 };
 
+type XY = { top: number; left: number };
+
+type StepUi = {
+  hideHeader?: boolean; // прячет всю верхнюю шапку (стрелка, лого, счетчик)
+  hideNextBtn?: boolean; // прячет кнопку Next внизу
+  width?: string;
+};
+
 /** Описание одного шага */
 export type StepConfig =
   | {
@@ -54,6 +66,7 @@ export type StepConfig =
       tooltipTitle?: string;
       tooltipText?: string;
       tooltipIcon?: string;
+      ui?: StepUi;
     }
   | {
       kind: "multi";
@@ -62,6 +75,7 @@ export type StepConfig =
       options: GenderOptions;
       hasUltiButton: boolean;
       min?: number; // минимум выбранных ответов для прохода дальше
+      ui?: StepUi;
     }
   | {
       kind: "praise";
@@ -69,6 +83,7 @@ export type StepConfig =
       description?: string;
       imageMale: string;
       imageFemale: string;
+      ui?: StepUi;
     }
   | {
       kind: "input";
@@ -77,10 +92,45 @@ export type StepConfig =
       placeholder?: string;
       validate?: (value: string | number | undefined) => boolean;
       pattern?: RegExp;
-      unit?: string; // на будущее можно расширить
+      unit?: string;
       tooltipTitle?: string;
       tooltipText?: string;
       tooltipIcon?: string;
+      ui?: StepUi;
+    }
+  | {
+      kind: "graphic";
+      title: string;
+      description?: string;
+      note?: string;
+      unit?: "kg" | "lb";
+      currentKey: StepKey;
+      targetKey: StepKey;
+      imageLoss: string;
+      imageGain: string;
+      positions?: {
+        loss?: { start: XY; end: XY };
+        gain?: { start: XY; end: XY };
+      };
+      ui?: StepUi;
+    }
+  | {
+      kind: "progress";
+      title: string;
+      subtitle?: string;
+      durationMs?: number; // длительность анимации
+      afterDelayMs?: number; // пауза после 100% до перехода
+      stars?: number; // 0..5 для карточек
+      socialProofTitle?: string;
+      socialProofCaption?: string;
+      legalNote?: string;
+      reviews?: Array<{
+        name: string;
+        text: string;
+        avatar?: string;
+        badge?: string; // например “★★★★★” или “Verified”
+      }>;
+      ui?: StepUi;
     };
 
 /** Единый источник информации для всего объекта */
@@ -171,6 +221,7 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     description: "You’ve already taken 5 steps toward your goal 💪",
     imageMale: "/images/gap/social_male.webp",
     imageFemale: "/images/gap/social_female.webp",
+    ui: { hideHeader: true },
   },
   stepDaytimeActivity: {
     kind: "single",
@@ -311,7 +362,7 @@ export const QUIZ: Record<StepKey, StepConfig> = {
       g1: {
         title: "37% of users*",
         text: "responded in the same way. BodyWay will help you create a habit of working out",
-        note: "*users of Unimeal who took the quiz",
+        note: "*users of BodyWay who took the quiz",
         iconSrc: "💪",
       },
       g2: {
@@ -428,6 +479,7 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     description: "Most people quit halfway, but you’re still going strong.",
     imageMale: "/images/step-second-praise/male.webp",
     imageFemale: "/images/step-second-praise/female.webp",
+    ui: { hideHeader: true },
   },
   stepTend: {
     kind: "multi",
@@ -500,6 +552,137 @@ export const QUIZ: Record<StepKey, StepConfig> = {
       ],
     },
   },
+  stepWater: {
+    kind: "single",
+    title: "How much water do you drink daily?",
+    description: "We mean clean water, excluding coffee, tea, and other drinks",
+    options: {
+      male: [
+        {
+          value: "Only coffee or tea",
+          label: "Only coffee or tea",
+          group: "g1",
+          icon: "/images/step-water/coffee-tea.svg",
+        },
+        {
+          value: "Less than 0.5 L",
+          label: "Less than 0.5 L",
+          labelDesc: "Fewer than 2 glasses",
+          group: "g1",
+          icon: "/images/step-water/2-glasses.svg",
+        },
+        {
+          value: "0.5 - 1.5 L",
+          label: "0.5 - 1.5 L",
+          labelDesc: "2-6 glasses",
+          group: "g2",
+          icon: "/images/step-water/6-glasses.svg",
+        },
+        {
+          value: "1.5 - 2.5 L",
+          label: "1.5 - 2.5 L",
+          labelDesc: "7-10 glasses",
+          group: "g2",
+          icon: "/images/step-water/10-glasses.svg",
+        },
+        {
+          value: "I don't count, it depends",
+          label: "I don't count, it depends",
+          icon: "/images/step-water/depends.svg",
+        },
+      ],
+      female: [
+        {
+          value: "Only coffee or tea",
+          label: "Only coffee or tea",
+          group: "g1",
+          icon: "/images/step-water/coffee-tea.svg",
+        },
+        {
+          value: "Less than 0.5 L",
+          label: "Less than 0.5 L",
+          labelDesc: "Fewer than 2 glasses",
+          group: "g1",
+          icon: "/images/step-water/2-glasses.svg",
+        },
+        {
+          value: "0.5 - 1.5 L",
+          label: "0.5 - 1.5 L",
+          labelDesc: "2-6 glasses",
+          group: "g2",
+          icon: "/images/step-water/6-glasses.svg",
+        },
+        {
+          value: "1.5 - 2.5 L",
+          label: "1.5 - 2.5 L",
+          labelDesc: "7-10 glasses",
+          group: "g2",
+          icon: "/images/step-water/10-glasses.svg",
+        },
+        {
+          value: "I don't count, it depends",
+          label: "I don't count, it depends",
+          icon: "/images/step-water/depends.svg",
+        },
+      ],
+    },
+    tooltipByGroup: {
+      g1: {
+        title: "Drinking water is essential",
+        text: "If you're not hydrated, your body can't perform at its highest level. BodyWay will remind you to drink enough water.",
+        note: "*users of BodyWay who took the quiz",
+        iconSrc: "💧",
+      },
+      g2: {
+        title: "Wow! Impressive!",
+        text: "You drink more water than 75% of users*. Keep it up!",
+        note: "*users of BodyWay who took the quiz",
+        iconSrc: "💧",
+      },
+    },
+  },
+  stepGraphic: {
+    kind: "graphic",
+    title: "The one and only plan you’ll ever need to get in shape",
+    description: "According to the information you have provided us, you’ll achieve your goal weight of",
+    note: "This is a tentative timeline based on your answers.",
+    currentKey: "stepWeight", // ключ для вопроса с реальным весом
+    targetKey: "stepWeightGoal", // ключ для вопроса с желаемым весом
+    imageLoss: "/images/step-graphic/down.png",
+    imageGain: "/images/step-graphic/up.png",
+    positions: {
+      loss: { start: { top: 13.5, left: 9.5 }, end: { top: 54.5, left: 86 } },
+      gain: { start: { top: 53, left: 9 }, end: { top: 10, left: 84.5 } },
+    },
+  },
+  stepProgress: {
+    kind: "progress",
+    title: "Analyzing your answers",
+    subtitle: "Building your personal plan…",
+    durationMs: 4000,
+    socialProofTitle: "30 million users",
+    reviews: [
+      {
+        name: "Katie Barr",
+        text: "The meals are lovely and similar to what I normally buy, and the recipes are easy to follow. I've lost 6 kg in less than a week. I'll admit, I was skeptical at first, but this is by far the most effective and best-priced diet.",
+        avatar: "/images/reviews/review-1.webp",
+        badge: "★★★★★",
+      },
+      {
+        name: "Marcus Hart",
+        text: "Helping me with my day-to-day meal planning. It is user-friendly and easy to read. Nothing extra fancy and direct. The exercises are practical and you feel the results. I love it.",
+        avatar: "/images/reviews/review-2.webp",
+        badge: "★★★★★",
+      },
+      {
+        name: "Prettypink Elois",
+        text: "I love this App, it keeps me motivated, keeps me on track, this app makes me on top of my schedule. These exercises on this app are amazing 👏🙌😍 I also love the yummy meals plan 😊 #Loveit!!!",
+        avatar: "/images/reviews/review-3.webp",
+        badge: "★★★★★",
+      },
+    ],
+    ui: { hideHeader: true, hideNextBtn: true, width: "1000px" },
+  },
 };
 
 /** Порядок шагов: меняем ЗДЕСЬ — меняется везде */
@@ -521,6 +704,9 @@ export const ORDER: StepKey[] = [
   "stepSecondPraise",
   "stepTend",
   "stepSleep",
+  "stepWater",
+  "stepGraphic",
+  "stepProgress",
 ];
 
 export const pathOf = (key: StepKey) => `/quiz/${camelToKebab(key)}`;

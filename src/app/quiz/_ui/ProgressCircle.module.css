@@ -1,0 +1,13 @@
+.wrapper {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.label {
+  position: absolute;
+  font-weight: bold;
+  font-size: 20px;
+  color: var(--primary-buttons, #00857a);
+}
