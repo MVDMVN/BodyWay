@@ -133,11 +133,7 @@
 
 .stage {
   position: relative;
-  width: 100%;
 }
 .scene {
-  position: absolute;
-  inset: 0;
-  /* чтобы картинки не прыгали при подгрузке: */
-  display: grid; /* сохраняет размеры дочернего контента при abs-позиционировании */
+  position: relative;
 }

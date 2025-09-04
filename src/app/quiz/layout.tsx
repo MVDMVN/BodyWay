@@ -1,23 +1,14 @@
-// layout.tsx (фрагмент)
 "use client";
+
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion, type Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { kebabToCamel } from "./_utils/case";
 import { QUIZ, ORDER, pathOf, nextKey, prevKey, type StepKey } from "./schema";
 import { QuizProvider, useQuiz } from "./QuizContext";
 import s from "./layout.module.css";
 import PrimaryButton from "./_ui/PrimaryButton";
-
-// более мягкая кривая
-const EASE: [number, number, number, number] = [0.22, 0.61, 0.36, 1];
-
-const fadeVariants: Variants = {
-  init: { opacity: 0 },
-  enter: { opacity: 1, transition: { duration: 0.28, ease: EASE } },
-  exit: { opacity: 0, transition: { duration: 0.22, ease: EASE } },
-};
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -31,6 +22,7 @@ function Shell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
 
+  // текущий ключ шага
   const seg = (pathname.split("/quiz")[1] || "").split("/").filter(Boolean)[0] || "step-age-range";
   const currentKey = kebabToCamel(seg) as StepKey;
 
@@ -47,47 +39,39 @@ function Shell({ children }: { children: React.ReactNode }) {
   const maxWidth = cfg?.ui?.width ?? "500px";
   const canGoNext = isAnswered(currentKey) && (!!next || !!cfg?.ui?.nextPath);
 
-  // 🔮 префетчим следующий шаг — уменьшает «паузу» на монтировании нового экрана
+  // префетч следующего шага — ускоряет переход
   useEffect(() => {
     if (next) router.prefetch(pathOf(next));
   }, [next, router]);
 
   function goNext() {
     if (!isAnswered(currentKey)) return;
-    if (cfg?.ui?.nextPath) return router.push(cfg.ui.nextPath);
+    if (cfg?.ui?.nextPath) {
+      router.push(cfg.ui.nextPath);
+      return;
+    }
     if (next) router.push(pathOf(next));
   }
 
-  // ---------- фиксация высоты на время кросс-фейда ----------
+  // анти-скачок по высоте
   const stageRef = useRef<HTMLDivElement | null>(null);
   const sceneRef = useRef<HTMLDivElement | null>(null);
-  const [lockedH, setLockedH] = useState<number | undefined>(undefined);
-  const [animating, setAnimating] = useState(false);
+  const [fixedHeight, setFixedHeight] = useState<number | undefined>(undefined);
 
-  // первичный замер
+  // первичное измерение
   useLayoutEffect(() => {
     const el = sceneRef.current;
-    if (el) setLockedH(el.offsetHeight);
+    if (el) setFixedHeight(el.offsetHeight);
   }, []);
 
-  // перед СМЕНОЙ шага — зафиксируем текущую высоту (чтобы не дёргалось в процессе)
-  useLayoutEffect(() => {
+  // обновляем высоту при смене шага/контента
+  useEffect(() => {
     const el = sceneRef.current;
     if (!el) return;
-    // как только ключ поменялся, старый слой ещё на месте — фиксируем его высоту
-    setAnimating(true);
-    setLockedH(el.offsetHeight);
+    const ro = new ResizeObserver(() => setFixedHeight(el.offsetHeight));
+    ro.observe(el);
+    return () => ro.disconnect();
   }, [currentKey]);
-
-  // по завершении выхода — отпускаем высоту и меряем новую
-  function handleExitComplete() {
-    requestAnimationFrame(() => {
-      const el = sceneRef.current;
-      if (!el) return;
-      setLockedH(el.offsetHeight);
-      setAnimating(false);
-    });
-  }
 
   return (
     <div className={s.wrap}>
@@ -114,6 +98,7 @@ function Shell({ children }: { children: React.ReactNode }) {
             </p>
           </header>
         )}
+
         {!hideHeader && (
           <div className={s.progress}>
             <div className={s.bar}>
@@ -123,37 +108,25 @@ function Shell({ children }: { children: React.ReactNode }) {
         )}
 
         <main className={s.card} style={{ maxWidth }}>
-          <div
+          {children}
+          {/* <div
             ref={stageRef}
             className={s.stage}
             style={{
-              height: lockedH, // ← фиксируем на время анимации
-              overflow: lockedH ? "hidden" : undefined,
+              height: fixedHeight,
+              overflow: fixedHeight ? "hidden" : undefined,
               position: "relative",
             }}>
-            <AnimatePresence
-              /* ВАЖНО: синхронный режим для кросс-фейда */
-              initial={false}
-              onExitComplete={handleExitComplete}>
-              <motion.div
-                key={currentKey}
-                ref={sceneRef}
-                className={s.scene}
-                variants={fadeVariants}
-                initial='init'
-                animate='enter'
-                exit='exit'
-                style={{
-                  // GPU-композитинг, чтобы opacity шёл без рефлоу
-                  backfaceVisibility: "hidden",
-                  transform: "translateZ(0)",
-                  willChange: "opacity",
-                  pointerEvents: animating ? "none" : undefined, // чтобы не словить клики во время кросс-фейда
-                }}>
-                {children}
-              </motion.div>
-            </AnimatePresence>
-          </div>
+            <motion.div
+              key={currentKey}
+              ref={sceneRef}
+              className={s.scene}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.22, ease: "easeInOut" }}
+              // важные мелочи на всякий: события включены
+              style={{ pointerEvents: "auto" }}></motion.div>
+          </div> */}
         </main>
       </div>
 

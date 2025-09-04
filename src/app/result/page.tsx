@@ -14,11 +14,13 @@ function num(v: unknown) {
 
 export default function ResultPage() {
   const [answers, setAnswers] = useState<Answers>({});
+  const [gender, setGender] = useState<string | null>(null);
 
   useEffect(() => {
     try {
       const raw = localStorage.getItem("quizAnswers:v1");
       if (raw) setAnswers(JSON.parse(raw));
+      setGender(localStorage.getItem("gender"));
     } catch {}
   }, []);
 
@@ -38,12 +40,14 @@ export default function ResultPage() {
     return Array.isArray(z) && z.length ? z.join(", ") : "Arms, Legs, Abs";
   }, [answers]);
 
-  const [gender, setGender] = useState<string | null>(null);
-  useEffect(() => {
-    try {
-      setGender(localStorage.getItem("gender"));
-    } catch {}
-  }, []);
+  // 👉 обработчик кнопки перехода на оффер
+  function handleGetProgram() {
+    const offer = "{offer}"; // макрос Keitaro подставит оффер-домен
+    const qs = typeof window !== "undefined" ? window.location.search : "";
+    const sep = offer.includes("?") ? "&" : "?";
+    const targetUrl = qs ? `${offer}${sep}${qs.slice(1)}` : offer;
+    window.location.replace(targetUrl);
+  }
 
   return (
     <div className={s.app}>
@@ -117,9 +121,9 @@ export default function ResultPage() {
               Results are not typical. Individual results may vary.
             </p>
           </div>
-          <button
-            className={`${s.btn} ${s.btnPrimary}`}
-            onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })}>
+
+          {/* скролл вниз */}
+          <button className={`${s.btn} ${s.btnPrimary}`} onClick={handleGetProgram}>
             Get My Results
           </button>
         </section>
