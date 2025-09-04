@@ -1,3 +1,4 @@
+// layout.tsx (фрагмент)
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -9,10 +10,13 @@ import { QuizProvider, useQuiz } from "./QuizContext";
 import s from "./layout.module.css";
 import PrimaryButton from "./_ui/PrimaryButton";
 
+// более мягкая кривая
+const EASE: [number, number, number, number] = [0.22, 0.61, 0.36, 1];
+
 const fadeVariants: Variants = {
   init: { opacity: 0 },
-  enter: { opacity: 1, transition: { duration: 0.5, ease: "easeInOut" } },
-  exit: { opacity: 0, transition: { duration: 0.7, ease: "easeInOut" } },
+  enter: { opacity: 1, transition: { duration: 0.28, ease: EASE } },
+  exit: { opacity: 0, transition: { duration: 0.22, ease: EASE } },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -43,55 +47,47 @@ function Shell({ children }: { children: React.ReactNode }) {
   const maxWidth = cfg?.ui?.width ?? "500px";
   const canGoNext = isAnswered(currentKey) && (!!next || !!cfg?.ui?.nextPath);
 
+  // 🔮 префетчим следующий шаг — уменьшает «паузу» на монтировании нового экрана
+  useEffect(() => {
+    if (next) router.prefetch(pathOf(next));
+  }, [next, router]);
+
   function goNext() {
     if (!isAnswered(currentKey)) return;
     if (cfg?.ui?.nextPath) return router.push(cfg.ui.nextPath);
     if (next) router.push(pathOf(next));
   }
 
-  // ---------- anti-jump: lock height only during transition ----------
+  // ---------- фиксация высоты на время кросс-фейда ----------
   const stageRef = useRef<HTMLDivElement | null>(null);
   const sceneRef = useRef<HTMLDivElement | null>(null);
-  const [fixedHeight, setFixedHeight] = useState<number | undefined>(undefined);
-  const isAnimatingRef = useRef(false);
-  const roRef = useRef<ResizeObserver | null>(null);
+  const [lockedH, setLockedH] = useState<number | undefined>(undefined);
+  const [animating, setAnimating] = useState(false);
 
-  // первичный замер после маунта
+  // первичный замер
   useLayoutEffect(() => {
     const el = sceneRef.current;
-    if (el) setFixedHeight(el.offsetHeight);
+    if (el) setLockedH(el.offsetHeight);
   }, []);
 
-  // следим за контентом, но не во время анимации
-  useEffect(() => {
+  // перед СМЕНОЙ шага — зафиксируем текущую высоту (чтобы не дёргалось в процессе)
+  useLayoutEffect(() => {
     const el = sceneRef.current;
     if (!el) return;
-    roRef.current?.disconnect();
-    roRef.current = new ResizeObserver(() => {
-      if (isAnimatingRef.current) return; // не трогаем высоту во время кросс-фейда
-      setFixedHeight(el.offsetHeight);
-    });
-    roRef.current.observe(el);
-    return () => roRef.current?.disconnect();
+    // как только ключ поменялся, старый слой ещё на месте — фиксируем его высоту
+    setAnimating(true);
+    setLockedH(el.offsetHeight);
   }, [currentKey]);
 
-  // когда старый слой исчез — меряем новый, обновляем высоту и «разлочиваем» сцену
+  // по завершении выхода — отпускаем высоту и меряем новую
   function handleExitComplete() {
-    isAnimatingRef.current = false;
     requestAnimationFrame(() => {
       const el = sceneRef.current;
       if (!el) return;
-      setFixedHeight(el.offsetHeight);
+      setLockedH(el.offsetHeight);
+      setAnimating(false);
     });
   }
-
-  // как только ключ шага меняется — фиксируем текущую высоту и ставим флаг анимации
-  useEffect(() => {
-    const el = sceneRef.current;
-    if (!el) return;
-    isAnimatingRef.current = true;
-    setFixedHeight((h) => h ?? el.offsetHeight); // если вдруг не было замера — берём текущую
-  }, [currentKey]);
 
   return (
     <div className={s.wrap}>
@@ -118,7 +114,6 @@ function Shell({ children }: { children: React.ReactNode }) {
             </p>
           </header>
         )}
-
         {!hideHeader && (
           <div className={s.progress}>
             <div className={s.bar}>
@@ -128,8 +123,18 @@ function Shell({ children }: { children: React.ReactNode }) {
         )}
 
         <main className={s.card} style={{ maxWidth }}>
-          <div className={s.stage} style={{ height: fixedHeight, overflow: fixedHeight ? "hidden" : undefined }}>
-            <AnimatePresence initial={false} onExitComplete={handleExitComplete}>
+          <div
+            ref={stageRef}
+            className={s.stage}
+            style={{
+              height: lockedH, // ← фиксируем на время анимации
+              overflow: lockedH ? "hidden" : undefined,
+              position: "relative",
+            }}>
+            <AnimatePresence
+              /* ВАЖНО: синхронный режим для кросс-фейда */
+              initial={false}
+              onExitComplete={handleExitComplete}>
               <motion.div
                 key={currentKey}
                 ref={sceneRef}
@@ -138,7 +143,13 @@ function Shell({ children }: { children: React.ReactNode }) {
                 initial='init'
                 animate='enter'
                 exit='exit'
-                style={{ willChange: "opacity" }}>
+                style={{
+                  // GPU-композитинг, чтобы opacity шёл без рефлоу
+                  backfaceVisibility: "hidden",
+                  transform: "translateZ(0)",
+                  willChange: "opacity",
+                  pointerEvents: animating ? "none" : undefined, // чтобы не словить клики во время кросс-фейда
+                }}>
                 {children}
               </motion.div>
             </AnimatePresence>
