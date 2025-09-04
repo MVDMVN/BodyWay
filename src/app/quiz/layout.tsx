@@ -9,11 +9,10 @@ import { QuizProvider, useQuiz } from "./QuizContext";
 import s from "./layout.module.css";
 import PrimaryButton from "./_ui/PrimaryButton";
 
-// один раз, вне компонента
 const fadeVariants: Variants = {
   init: { opacity: 0 },
-  enter: { opacity: 1, transition: { duration: 0.25, ease: "easeInOut" } },
-  exit: { opacity: 0, transition: { duration: 0.2, ease: "easeInOut" } },
+  enter: { opacity: 1, transition: { duration: 0.5, ease: "easeInOut" } },
+  exit: { opacity: 0, transition: { duration: 0.7, ease: "easeInOut" } },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -28,7 +27,6 @@ function Shell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
 
-  // тек. шаг
   const seg = (pathname.split("/quiz")[1] || "").split("/").filter(Boolean)[0] || "step-age-range";
   const currentKey = kebabToCamel(seg) as StepKey;
 
@@ -51,27 +49,48 @@ function Shell({ children }: { children: React.ReactNode }) {
     if (next) router.push(pathOf(next));
   }
 
-  // ---- высота сцены (анти-скачок) ----
+  // ---------- anti-jump: lock height only during transition ----------
   const stageRef = useRef<HTMLDivElement | null>(null);
   const sceneRef = useRef<HTMLDivElement | null>(null);
   const [fixedHeight, setFixedHeight] = useState<number | undefined>(undefined);
+  const isAnimatingRef = useRef(false);
+  const roRef = useRef<ResizeObserver | null>(null);
 
-  // 1) первичное измерение после маунта (без мигания)
+  // первичный замер после маунта
   useLayoutEffect(() => {
     const el = sceneRef.current;
     if (el) setFixedHeight(el.offsetHeight);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // один раз
+  }, []);
 
-  // 2) следим за изменением высоты контента (разные шаги — разная высота)
+  // следим за контентом, но не во время анимации
   useEffect(() => {
     const el = sceneRef.current;
     if (!el) return;
-    const ro = new ResizeObserver(() => {
+    roRef.current?.disconnect();
+    roRef.current = new ResizeObserver(() => {
+      if (isAnimatingRef.current) return; // не трогаем высоту во время кросс-фейда
       setFixedHeight(el.offsetHeight);
     });
-    ro.observe(el);
-    return () => ro.disconnect();
+    roRef.current.observe(el);
+    return () => roRef.current?.disconnect();
+  }, [currentKey]);
+
+  // когда старый слой исчез — меряем новый, обновляем высоту и «разлочиваем» сцену
+  function handleExitComplete() {
+    isAnimatingRef.current = false;
+    requestAnimationFrame(() => {
+      const el = sceneRef.current;
+      if (!el) return;
+      setFixedHeight(el.offsetHeight);
+    });
+  }
+
+  // как только ключ шага меняется — фиксируем текущую высоту и ставим флаг анимации
+  useEffect(() => {
+    const el = sceneRef.current;
+    if (!el) return;
+    isAnimatingRef.current = true;
+    setFixedHeight((h) => h ?? el.offsetHeight); // если вдруг не было замера — берём текущую
   }, [currentKey]);
 
   return (
@@ -109,16 +128,8 @@ function Shell({ children }: { children: React.ReactNode }) {
         )}
 
         <main className={s.card} style={{ maxWidth }}>
-          {/* ВАЖНО: пока нет замера — не навешиваем overflow:hidden и не задаём 0-высоту */}
-          <div
-            ref={stageRef}
-            className={s.stage}
-            style={{
-              height: fixedHeight, // число -> px
-              overflow: fixedHeight ? "hidden" : undefined, // не режем до первого замера
-              position: "relative",
-            }}>
-            <AnimatePresence mode='wait' initial={false}>
+          <div className={s.stage} style={{ height: fixedHeight, overflow: fixedHeight ? "hidden" : undefined }}>
+            <AnimatePresence initial={false} onExitComplete={handleExitComplete}>
               <motion.div
                 key={currentKey}
                 ref={sceneRef}
@@ -126,7 +137,8 @@ function Shell({ children }: { children: React.ReactNode }) {
                 variants={fadeVariants}
                 initial='init'
                 animate='enter'
-                exit='exit'>
+                exit='exit'
+                style={{ willChange: "opacity" }}>
                 {children}
               </motion.div>
             </AnimatePresence>
