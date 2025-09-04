@@ -31,7 +31,7 @@
   position: relative;
   display: flex;
   background: #faf2e8;
-  padding: 0 16px 24px 16px;
+  padding: 0 16px;
 }
 .sectionHeader::before {
   content: "";
@@ -143,9 +143,7 @@
 .mobileGuysBlock {
   display: flex;
   width: 305px;
-  height: 339px;
   min-width: 305px;
-  min-height: 339px;
 }
 .tabletGuysBlock {
   display: none;
@@ -270,10 +268,22 @@
 /* Footer */
 .footer {
   background-color: rgb(250, 242, 232);
-  padding: 12px 0 60px 0;
+  padding: 150px 0 60px 0;
   text-align: center;
 }
 .footerText {
   font-size: 16px;
   line-height: 20px;
+}
+
+@media (max-width: 1024px) {
+  .footer {
+    padding: 80px 0 60px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 36px 16 60px 16px;
+  }
 }

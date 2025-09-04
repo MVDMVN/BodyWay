@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { kebabToCamel } from "./_utils/case";
-import { QUIZ, ORDER, pathOf, nextKey, prevKey, type StepKey } from "./schema";
+import { QUIZ, ORDER, Images, pathOf, nextKey, prevKey, type StepKey } from "./schema";
 import { QuizProvider, useQuiz } from "./QuizContext";
 import s from "./layout.module.css";
 import PrimaryButton from "./_ui/PrimaryButton";
@@ -79,19 +79,19 @@ function Shell({ children }: { children: React.ReactNode }) {
         {hideHeader ? (
           <header className={s.header}>
             <Link href={prev ? pathOf(prev) : "/"} className={s.backBtn} aria-label='Back'>
-              <img src='/images/back-arrow.svg' alt='' />
+              <img src={Images.backArrow} alt='' />
             </Link>
             <div className={`${s.logo} ${s.logoCenter}`}>
-              <img src='/images/logo.png' alt='' />
+              <img src={Images.logo} alt='' />
             </div>
           </header>
         ) : (
           <header className={s.header}>
             <Link href={prev ? pathOf(prev) : "/"} className={s.backBtn} aria-label='Back'>
-              <img src='/images/back-arrow.svg' alt='' />
+              <img src={Images.backArrow} alt='' />
             </Link>
             <div className={s.logo}>
-              <img src='/images/logo.png' alt='' />
+              <img src={Images.logo} alt='' />
             </div>
             <p className={s.meta}>
               {idx + 1}/{ORDER.length}

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState, useMemo } from "react";
 import { useQuiz } from "../quiz/QuizContext";
-import { QUIZ, type StepKey } from "../quiz/schema";
+import { QUIZ, Images, type StepKey } from "../quiz/schema";
 import u from "./quiz-ui.module.css";
 import s from "./StepMulti.module.css";
 
@@ -66,9 +66,9 @@ export default function StepMultiCard({ stepKey }: Props) {
                 disabled={disabled}>
                 <span className={s.checkboxWrap}>
                   {active ? (
-                    <img src='/images/checked.svg' alt='checked' className={s.checkbox} />
+                    <img src={Images.checked} alt='checked' className={s.checkbox} />
                   ) : (
-                    <img src='/images/unchecked.svg' alt='unchecked' className={s.checkbox} />
+                    <img src={Images.unchecked} alt='unchecked' className={s.checkbox} />
                   )}
                 </span>
                 <span className={s.label}>{item.label}</span>
@@ -90,9 +90,9 @@ export default function StepMultiCard({ stepKey }: Props) {
                     type='button'>
                     <span className={s.checkboxWrap}>
                       {noneActive ? (
-                        <img src='/images/checked.svg' alt='checked' className={s.checkbox} />
+                        <img src={Images.checked} alt='checked' className={s.checkbox} />
                       ) : (
-                        <img src='/images/unchecked.svg' alt='unchecked' className={s.checkbox} />
+                        <img src={Images.unchecked} alt='unchecked' className={s.checkbox} />
                       )}
                     </span>
                     <span className={s.label}>None of the above</span>

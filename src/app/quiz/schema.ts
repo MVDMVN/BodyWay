@@ -1,4 +1,5 @@
 import { camelToKebab } from "./_utils/case";
+import { withBase } from "../../lib/prefix"; // путь поправь под себя
 
 /** Ключи ответов (camelCase) */
 export type StepKey =
@@ -153,16 +154,16 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     title: "Weight-loss plan according to your age",
     options: {
       male: [
-        { value: "18-29", label: "18-29", image: "/images/step-age/male/18-25.png" },
-        { value: "30-39", label: "30-39", image: "/images/step-age/male/26-35.png" },
-        { value: "40-54", label: "40-54", image: "/images/step-age/male/36-45.png" },
-        { value: "55+", label: "55+", image: "/images/step-age/male/46+.png" },
+        { value: "18-29", label: "18-29", image: withBase("/images/step-age/male/18-25.png") },
+        { value: "30-39", label: "30-39", image: withBase("/images/step-age/male/26-35.png") },
+        { value: "40-54", label: "40-54", image: withBase("/images/step-age/male/36-45.png") },
+        { value: "55+", label: "55+", image: withBase("/images/step-age/male/46+.png") },
       ],
       female: [
-        { value: "18-29", label: "18-29", image: "/images/step-age/female/18-29.webp" },
-        { value: "30-39", label: "30-39", image: "/images/step-age/female/30-39.webp" },
-        { value: "40-54", label: "40-54", image: "/images/step-age/female/40-54.webp" },
-        { value: "55+", label: "55+", image: "/images/step-age/female/55+.webp" },
+        { value: "18-29", label: "18-29", image: withBase("/images/step-age/female/18-29.webp") },
+        { value: "30-39", label: "30-39", image: withBase("/images/step-age/female/30-39.webp") },
+        { value: "40-54", label: "40-54", image: withBase("/images/step-age/female/40-54.webp") },
+        { value: "55+", label: "55+", image: withBase("/images/step-age/female/55+.webp") },
       ],
     },
   },
@@ -171,13 +172,13 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     title: "Сhoose your goal",
     options: {
       male: [
-        { value: "Muscle Gain", label: "Muscle Gain", image: "/images/step-goal/male/swole.webp" },
-        { value: "Weight Loss", label: "Weight Loss", image: "/images/step-goal/male/heavier.webp" },
+        { value: "Muscle Gain", label: "Muscle Gain", image: withBase("/images/step-goal/male/swole.webp") },
+        { value: "Weight Loss", label: "Weight Loss", image: withBase("/images/step-goal/male/heavier.webp") },
       ],
       female: [
-        { value: "Weight Loss", label: "Weight Loss", image: "/images/step-goal/female/slim.webp" },
-        { value: "Fit Body", label: "Fit Body", image: "/images/step-goal/female/fit.webp" },
-        { value: "Tone Muscles", label: "Tone Muscles", image: "/images/step-goal/female/muscular.webp" },
+        { value: "Weight Loss", label: "Weight Loss", image: withBase("/images/step-goal/female/slim.webp") },
+        { value: "Fit Body", label: "Fit Body", image: withBase("/images/step-goal/female/fit.webp") },
+        { value: "Tone Muscles", label: "Tone Muscles", image: withBase("/images/step-goal/female/muscular.webp") },
       ],
     },
   },
@@ -186,14 +187,14 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     title: "Choose your body type",
     options: {
       male: [
-        { value: "Skinny", label: "Skinny", image: "/images/step-bodytype/male/skinny.webp" },
-        { value: "Regular", label: "Regular", image: "/images/step-bodytype/male/regular.webp" },
-        { value: "Extra Plump", label: "Extra Plump", image: "/images/step-bodytype/male/extra-plumb.webp" },
+        { value: "Skinny", label: "Skinny", image: withBase("/images/step-bodytype/male/skinny.webp") },
+        { value: "Regular", label: "Regular", image: withBase("/images/step-bodytype/male/regular.webp") },
+        { value: "Extra Plump", label: "Extra Plump", image: withBase("/images/step-bodytype/male/extra-plumb.webp") },
       ],
       female: [
-        { value: "Regular", label: "Regular", image: "/images/step-bodytype/female/regular.webp" },
-        { value: "Plump", label: "Plump", image: "/images/step-bodytype/female/plump.webp" },
-        { value: "Extra Plump", label: "Extra Plump", image: "/images/step-bodytype/female/extra.webp" },
+        { value: "Regular", label: "Regular", image: withBase("/images/step-bodytype/female/regular.webp") },
+        { value: "Plump", label: "Plump", image: withBase("/images/step-bodytype/female/plump.webp") },
+        { value: "Extra Plump", label: "Extra Plump", image: withBase("/images/step-bodytype/female/extra.webp") },
       ],
     },
   },
@@ -202,14 +203,14 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     title: "Choose the body you want",
     options: {
       male: [
-        { value: "Cut", label: "Cut", image: "/images/step-body-want/male/cut.webp" },
-        { value: "Bulk", label: "Bulk", image: "/images/step-body-want/male/bulk.webp" },
-        { value: "Extra Bulk", label: "Extra Bulk", image: "/images/step-body-want/male/extra-bulk.webp" },
+        { value: "Cut", label: "Cut", image: withBase("/images/step-body-want/male/cut.webp") },
+        { value: "Bulk", label: "Bulk", image: withBase("/images/step-body-want/male/bulk.webp") },
+        { value: "Extra Bulk", label: "Extra Bulk", image: withBase("/images/step-body-want/male/extra-bulk.webp") },
       ],
       female: [
-        { value: "Fit", label: "Fit", image: "/images/step-body-want/female/fit.webp" },
-        { value: "Muscular", label: "Muscular", image: "/images/step-body-want/female/muscular.webp" },
-        { value: "Shapely", label: "Shapely", image: "/images/step-body-want/female/shapely.webp" },
+        { value: "Fit", label: "Fit", image: withBase("/images/step-body-want/female/fit.webp") },
+        { value: "Muscular", label: "Muscular", image: withBase("/images/step-body-want/female/muscular.webp") },
+        { value: "Shapely", label: "Shapely", image: withBase("/images/step-body-want/female/shapely.webp") },
       ],
     },
   },
@@ -219,15 +220,23 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     hasUltiButton: false,
     options: {
       male: [
-        { value: "Abs", label: "Abs", image: "/images/step-target-zones/male/abs.webp" },
-        { value: "Arms & Chest", label: "Arms & Chest", image: "/images/step-target-zones/male/arms-chest.webp" },
-        { value: "Legs", label: "Legs", image: "/images/step-target-zones/male/legs.webp" },
+        { value: "Abs", label: "Abs", image: withBase("/images/step-target-zones/male/abs.webp") },
+        {
+          value: "Arms & Chest",
+          label: "Arms & Chest",
+          image: withBase("/images/step-target-zones/male/arms-chest.webp"),
+        },
+        { value: "Legs", label: "Legs", image: withBase("/images/step-target-zones/male/legs.webp") },
       ],
       female: [
-        { value: "Slim Legs", label: "Slim Legs", image: "/images/step-target-zones/female/legs.webp" },
-        { value: "Toned Butt", label: "Toned Butt", image: "/images/step-target-zones/female/butt.webp" },
-        { value: "Perky Breasts", label: "Perky Breasts", image: "/images/step-target-zones/female/breasts.webp" },
-        { value: "Flat Belly", label: "Flat Belly", image: "/images/step-target-zones/female/belly.webp" },
+        { value: "Slim Legs", label: "Slim Legs", image: withBase("/images/step-target-zones/female/legs.webp") },
+        { value: "Toned Butt", label: "Toned Butt", image: withBase("/images/step-target-zones/female/butt.webp") },
+        {
+          value: "Perky Breasts",
+          label: "Perky Breasts",
+          image: withBase("/images/step-target-zones/female/breasts.webp"),
+        },
+        { value: "Flat Belly", label: "Flat Belly", image: withBase("/images/step-target-zones/female/belly.webp") },
       ],
     },
   },
@@ -235,8 +244,8 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     kind: "praise",
     title: "Great!",
     description: "You’ve already taken 5 steps toward your goal 💪",
-    imageMale: "/images/gap/social_male.webp",
-    imageFemale: "/images/gap/social_female.webp",
+    imageMale: withBase("/images/gap/social_male.webp"),
+    imageFemale: withBase("/images/gap/social_female.webp"),
     ui: { hideHeader: true },
   },
   stepDaytimeActivity: {
@@ -248,44 +257,44 @@ export const QUIZ: Record<StepKey, StepConfig> = {
         {
           value: "Sitting all day long at work",
           label: "Sitting all day long at work",
-          icon: "/images/step-daytime-activity/male/sitting.svg",
+          icon: withBase("/images/step-daytime-activity/male/sitting.svg"),
         },
         {
           value: "I'm always on my feet",
           label: "I'm always on my feet",
-          icon: "/images/step-daytime-activity/male/on-feet.svg",
+          icon: withBase("/images/step-daytime-activity/male/on-feet.svg"),
         },
         {
           value: "Doing lots of physical activity",
           label: "Doing lots of physical activity",
-          icon: "/images/step-daytime-activity/male/a-lot.svg",
+          icon: withBase("/images/step-daytime-activity/male/a-lot.svg"),
         },
         {
           value: "Staying at home",
           label: "Staying at home",
-          icon: "/images/step-daytime-activity/male/at-home.svg",
+          icon: withBase("/images/step-daytime-activity/male/at-home.svg"),
         },
       ],
       female: [
         {
           value: "Sitting all day long at work",
           label: "Sitting all day long at work",
-          icon: "/images/step-daytime-activity/female/sitting.svg",
+          icon: withBase("/images/step-daytime-activity/female/sitting.svg"),
         },
         {
           value: "I'm always on my feet",
           label: "I'm always on my feet",
-          icon: "/images/step-daytime-activity/female/on-feet.svg",
+          icon: withBase("/images/step-daytime-activity/female/on-feet.svg"),
         },
         {
           value: "Doing lots of physical activity",
           label: "Doing lots of physical activity",
-          icon: "/images/step-daytime-activity/female/a-lot.svg",
+          icon: withBase("/images/step-daytime-activity/female/a-lot.svg"),
         },
         {
           value: "Staying at home",
           label: "Staying at home",
-          icon: "/images/step-daytime-activity/female/at-home.svg",
+          icon: withBase("/images/step-daytime-activity/female/at-home.svg"),
         },
       ],
     },
@@ -293,8 +302,8 @@ export const QUIZ: Record<StepKey, StepConfig> = {
   stepPerfectWeight: {
     kind: "single",
     title: "When was the last time you were content with your body weight?",
-    sideImageMale: "/images/step-perfect-weight/male/perfect-weight-male.webp",
-    sideImageFemale: "/images/step-perfect-weight/female/perfect-weight-female.webp",
+    sideImageMale: withBase("/images/step-perfect-weight/male/perfect-weight-male.webp"),
+    sideImageFemale: withBase("/images/step-perfect-weight/female/perfect-weight-female.webp"),
     options: {
       male: [
         { value: "0-6 months", label: "0-6 months" },
@@ -320,57 +329,67 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     description: "Workouts boost your weight loss results. We can help you make it a daily habit.",
     options: {
       male: [
-        { value: "No, i don't", label: "No, i don't", group: "g1", icon: "/images/step-do-you-workout/male/not.svg" },
+        {
+          value: "No, i don't",
+          label: "No, i don't",
+          group: "g1",
+          icon: withBase("/images/step-do-you-workout/male/not.svg"),
+        },
         {
           value: "Only walks",
           label: "Only walks",
           group: "g1",
-          icon: "/images/step-do-you-workout/male/only-walk.svg",
+          icon: withBase("/images/step-do-you-workout/male/only-walk.svg"),
         },
         {
           value: "1-2 times a week",
           label: "1-2 times a week",
           group: "g2",
-          icon: "/images/step-do-you-workout/male/1-2-times.svg",
+          icon: withBase("/images/step-do-you-workout/male/1-2-times.svg"),
         },
         {
           value: "3-5 times a week",
           label: "3-5 times a week",
           group: "g2",
-          icon: "/images/step-do-you-workout/male/3-5-times.svg",
+          icon: withBase("/images/step-do-you-workout/male/3-5-times.svg"),
         },
         {
           value: "More than 5 times a week",
           label: "More than 5 times a week",
           group: "g2",
-          icon: "/images/step-do-you-workout/male/more-5.svg",
+          icon: withBase("/images/step-do-you-workout/male/more-5.svg"),
         },
       ],
       female: [
-        { value: "No, i don't", label: "No, i don't", group: "g1", icon: "/images/step-do-you-workout/female/not.svg" },
+        {
+          value: "No, i don't",
+          label: "No, i don't",
+          group: "g1",
+          icon: withBase("/images/step-do-you-workout/female/not.svg"),
+        },
         {
           value: "Only walks",
           label: "Only walks",
           group: "g1",
-          icon: "/images/step-do-you-workout/female/only-walk.svg",
+          icon: withBase("/images/step-do-you-workout/female/only-walk.svg"),
         },
         {
           value: "1-2 times a week",
           label: "1-2 times a week",
           group: "g2",
-          icon: "/images/step-do-you-workout/female/1-2-times.svg",
+          icon: withBase("/images/step-do-you-workout/female/1-2-times.svg"),
         },
         {
           value: "3-5 times a week",
           label: "3-5 times a week",
           group: "g2",
-          icon: "/images/step-do-you-workout/female/3-5-times.svg",
+          icon: withBase("/images/step-do-you-workout/female/3-5-times.svg"),
         },
         {
           value: "More than 5 times a week",
           label: "More than 5 times a week",
           group: "g2",
-          icon: "/images/step-do-you-workout/female/more-5.svg",
+          icon: withBase("/images/step-do-you-workout/female/more-5.svg"),
         },
       ],
     },
@@ -397,44 +416,44 @@ export const QUIZ: Record<StepKey, StepConfig> = {
         {
           value: "I feel tired all day long",
           label: "I feel tired all day long",
-          icon: "/images/step-energy-level/male/tired.svg",
+          icon: withBase("/images/step-energy-level/male/tired.svg"),
         },
         {
           value: "I feel tired before meals",
           label: "I feel tired before meals",
-          icon: "/images/step-energy-level/male/meal.svg",
+          icon: withBase("/images/step-energy-level/male/meal.svg"),
         },
         {
           value: "I have a couple of afternoon yawns",
           label: "I have a couple of afternoon yawns",
-          icon: "/images/step-energy-level/male/yawns.svg",
+          icon: withBase("/images/step-energy-level/male/yawns.svg"),
         },
         {
           value: "I'm a ball of fire all day long",
           label: "I'm a ball of fire all day long",
-          icon: "/images/step-energy-level/male/fire.svg",
+          icon: withBase("/images/step-energy-level/male/fire.svg"),
         },
       ],
       female: [
         {
           value: "I feel tired all day long",
           label: "I feel tired all day long",
-          icon: "/images/step-energy-level/female/tired.svg",
+          icon: withBase("/images/step-energy-level/female/tired.svg"),
         },
         {
           value: "I feel tired before meals",
           label: "I feel tired before meals",
-          icon: "/images/step-energy-level/female/meal.svg",
+          icon: withBase("/images/step-energy-level/female/meal.svg"),
         },
         {
           value: "I have a couple of afternoon yawns",
           label: "I have a couple of afternoon yawns",
-          icon: "/images/step-energy-level/female/yawns.svg",
+          icon: withBase("/images/step-energy-level/female/yawns.svg"),
         },
         {
           value: "I'm a ball of fire all day long",
           label: "I'm a ball of fire all day long",
-          icon: "/images/step-energy-level/female/fire.svg",
+          icon: withBase("/images/step-energy-level/female/fire.svg"),
         },
       ],
     },
@@ -447,7 +466,7 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     unit: "cm",
     validate: (v) => {
       const n = typeof v === "number" ? v : Number(String(v).replace(/[^\d]/g, ""));
-      return Number.isFinite(n) && n >= 120 && n <= 230;
+      return Number.isFinite(n) && n >= 140 && n <= 220;
     },
     tooltipTitle: "Calculating your body mass index",
     tooltipText: "BMI is widely used as a risk indicator for the development or prevalence of several health issues.",
@@ -461,7 +480,7 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     unit: "kg",
     validate: (v) => {
       const n = typeof v === "number" ? v : Number(String(v).replace(/[^\d]/g, ""));
-      return Number.isFinite(n) && n >= 60 && n <= 200;
+      return Number.isFinite(n) && n >= 40 && n <= 180;
     },
     tooltipIcon: "☝️",
   },
@@ -473,7 +492,7 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     unit: "kg",
     validate: (v) => {
       const n = typeof v === "number" ? v : Number(String(v).replace(/[^\d]/g, ""));
-      return Number.isFinite(n) && n >= 60 && n <= 200;
+      return Number.isFinite(n) && n >= 40 && n <= 180;
     },
   },
   stepAge: {
@@ -493,8 +512,8 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     kind: "praise",
     title: "Great job! 👏",
     description: "Most people quit halfway, but you’re still going strong.",
-    imageMale: "/images/step-second-praise/male.webp",
-    imageFemale: "/images/step-second-praise/female.webp",
+    imageMale: withBase("/images/step-second-praise/male.webp"),
+    imageFemale: withBase("/images/step-second-praise/female.webp"),
     ui: { hideHeader: true },
   },
   stepTend: {
@@ -503,49 +522,57 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     hasUltiButton: true,
     options: {
       male: [
-        { value: "I eat late at night", label: "I eat late at night", icon: "/images/step-tend/male/eat-night.svg" },
+        {
+          value: "I eat late at night",
+          label: "I eat late at night",
+          icon: withBase("/images/step-tend/male/eat-night.svg"),
+        },
         {
           value: "I can't give up eating sweets",
           label: "I can't give up eating sweets",
-          icon: "/images/step-tend/male/sweets.svg",
+          icon: withBase("/images/step-tend/male/sweets.svg"),
         },
         {
           value: "I love soft drinks",
           label: "I love soft drinks",
-          icon: "/images/step-tend/male/soft-drinks.svg",
+          icon: withBase("/images/step-tend/male/soft-drinks.svg"),
         },
         {
           value: "I consume hard drinks from time to time",
           label: "I consume hard drinks from time to time",
-          icon: "/images/step-tend/male/hard-drinks.svg",
+          icon: withBase("/images/step-tend/male/hard-drinks.svg"),
         },
         {
           value: "I love fatty or salty foods",
           label: "I love fatty or salty foods",
-          icon: "/images/step-tend/male/salty.svg",
+          icon: withBase("/images/step-tend/male/salty.svg"),
         },
       ],
       female: [
-        { value: "I eat late at night", label: "I eat late at night", icon: "/images/step-tend/female/eat-night.svg" },
+        {
+          value: "I eat late at night",
+          label: "I eat late at night",
+          icon: withBase("/images/step-tend/female/eat-night.svg"),
+        },
         {
           value: "I can't give up eating sweets",
           label: "I can't give up eating sweets",
-          icon: "/images/step-tend/female/sweets.svg",
+          icon: withBase("/images/step-tend/female/sweets.svg"),
         },
         {
           value: "I love soft drinks",
           label: "I love soft drinks",
-          icon: "/images/step-tend/female/soft-drinks.svg",
+          icon: withBase("/images/step-tend/female/soft-drinks.svg"),
         },
         {
           value: "I consume hard drinks from time to time",
           label: "I consume hard drinks from time to time",
-          icon: "/images/step-tend/female/hard-drinks.svg",
+          icon: withBase("/images/step-tend/female/hard-drinks.svg"),
         },
         {
           value: "I love fatty or salty foods",
           label: "I love fatty or salty foods",
-          icon: "/images/step-tend/female/salty.svg",
+          icon: withBase("/images/step-tend/female/salty.svg"),
         },
       ],
     },
@@ -578,33 +605,33 @@ export const QUIZ: Record<StepKey, StepConfig> = {
           value: "Only coffee or tea",
           label: "Only coffee or tea",
           group: "g1",
-          icon: "/images/step-water/coffee-tea.svg",
+          icon: withBase("/images/step-water/coffee-tea.svg"),
         },
         {
           value: "Less than 0.5 L",
           label: "Less than 0.5 L",
           labelDesc: "Fewer than 2 glasses",
           group: "g1",
-          icon: "/images/step-water/2-glasses.svg",
+          icon: withBase("/images/step-water/2-glasses.svg"),
         },
         {
           value: "0.5 - 1.5 L",
           label: "0.5 - 1.5 L",
           labelDesc: "2-6 glasses",
           group: "g2",
-          icon: "/images/step-water/6-glasses.svg",
+          icon: withBase("/images/step-water/6-glasses.svg"),
         },
         {
           value: "1.5 - 2.5 L",
           label: "1.5 - 2.5 L",
           labelDesc: "7-10 glasses",
           group: "g2",
-          icon: "/images/step-water/10-glasses.svg",
+          icon: withBase("/images/step-water/10-glasses.svg"),
         },
         {
           value: "I don't count, it depends",
           label: "I don't count, it depends",
-          icon: "/images/step-water/depends.svg",
+          icon: withBase("/images/step-water/depends.svg"),
         },
       ],
       female: [
@@ -612,33 +639,33 @@ export const QUIZ: Record<StepKey, StepConfig> = {
           value: "Only coffee or tea",
           label: "Only coffee or tea",
           group: "g1",
-          icon: "/images/step-water/coffee-tea.svg",
+          icon: withBase("/images/step-water/coffee-tea.svg"),
         },
         {
           value: "Less than 0.5 L",
           label: "Less than 0.5 L",
           labelDesc: "Fewer than 2 glasses",
           group: "g1",
-          icon: "/images/step-water/2-glasses.svg",
+          icon: withBase("/images/step-water/2-glasses.svg"),
         },
         {
           value: "0.5 - 1.5 L",
           label: "0.5 - 1.5 L",
           labelDesc: "2-6 glasses",
           group: "g2",
-          icon: "/images/step-water/6-glasses.svg",
+          icon: withBase("/images/step-water/6-glasses.svg"),
         },
         {
           value: "1.5 - 2.5 L",
           label: "1.5 - 2.5 L",
           labelDesc: "7-10 glasses",
           group: "g2",
-          icon: "/images/step-water/10-glasses.svg",
+          icon: withBase("/images/step-water/10-glasses.svg"),
         },
         {
           value: "I don't count, it depends",
           label: "I don't count, it depends",
-          icon: "/images/step-water/depends.svg",
+          icon: withBase("/images/step-water/depends.svg"),
         },
       ],
     },
@@ -664,8 +691,8 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     note: "This is a tentative timeline based on your answers.",
     currentKey: "stepWeight", // ключ для вопроса с реальным весом
     targetKey: "stepWeightGoal", // ключ для вопроса с желаемым весом
-    imageLoss: "/images/step-graphic/down.png",
-    imageGain: "/images/step-graphic/up.png",
+    imageLoss: withBase("/images/step-graphic/down.png"),
+    imageGain: withBase("/images/step-graphic/up.png"),
     positions: {
       loss: { start: { top: 13.5, left: 9.5 }, end: { top: 54.5, left: 86 } },
       gain: { start: { top: 53, left: 9 }, end: { top: 10, left: 84.5 } },
@@ -681,19 +708,19 @@ export const QUIZ: Record<StepKey, StepConfig> = {
       {
         name: "Katie Barr",
         text: "The meals are lovely and similar to what I normally buy, and the recipes are easy to follow. I've lost 6 kg in less than a week. I'll admit, I was skeptical at first, but this is by far the most effective and best-priced diet.",
-        avatar: "/images/reviews/review-1.webp",
+        avatar: withBase("/images/reviews/review-1.webp"),
         badge: "★★★★★",
       },
       {
         name: "Marcus Hart",
         text: "Helping me with my day-to-day meal planning. It is user-friendly and easy to read. Nothing extra fancy and direct. The exercises are practical and you feel the results. I love it.",
-        avatar: "/images/reviews/review-2.webp",
+        avatar: withBase("/images/reviews/review-2.webp"),
         badge: "★★★★★",
       },
       {
         name: "Prettypink Elois",
         text: "I love this App, it keeps me motivated, keeps me on track, this app makes me on top of my schedule. These exercises on this app are amazing 👏🙌😍 I also love the yummy meals plan 😊 #Loveit!!!",
-        avatar: "/images/reviews/review-3.webp",
+        avatar: withBase("/images/reviews/review-3.webp"),
         badge: "★★★★★",
       },
     ],
@@ -706,7 +733,7 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     placeholder: "your@email.com",
     description:
       "We respect your privacy and use your email only to send you the Unimeal program and other important emails. You won't receive spam.",
-    descriptionIcon: "/images/email/email-desc-icon.svg",
+    descriptionIcon: withBase("/images/email/email-desc-icon.svg"),
     ui: { hideNextBtn: true, width: "720px" },
   },
   stepName: {
@@ -735,6 +762,24 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     },
     ui: { hideHeader: true, nextPath: "/result" },
   },
+};
+
+export const Images = {
+  logo: withBase("/images/logo.png"),
+  backArrow: withBase("/images/back-arrow.svg"),
+  resultFatMale: withBase("/images/result/male-fat.webp"),
+  resultFatFemale: withBase("/images/result/female-fat.webp"),
+  resultFitMale: withBase("/images/result/male-fit.webp"),
+  resultFitFemale: withBase("/images/result/female-fit.webp"),
+  arrowRight: withBase("/images/result/arrow-right.webp"),
+  resultGoal: withBase("/images/result/goal.svg"),
+  resultAge: withBase("/images/result/age.svg"),
+  resultEnergy: withBase("/images/result/age.svg"),
+  resultTarget: withBase("/images/result/target.svg"),
+  resultCheck: withBase("/images/result/check.svg"),
+  resultMoney: withBase("/images/result/money.svg"),
+  checked: withBase("/images/checked.svg"),
+  unchecked: withBase("/images/unchecked.svg"),
 };
 
 /** Порядок шагов: меняем ЗДЕСЬ — меняется везде */

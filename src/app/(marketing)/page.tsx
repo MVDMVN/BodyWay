@@ -48,7 +48,7 @@ export default function Page() {
             </div>
 
             <div className={s.mobileGuysBlock}>
-              <img loading='lazy' width='305' height='339' src='/images/mobile-guys.svg' alt='' />
+              <img loading='lazy' src='/images/mobile-guys.svg' alt='' />
             </div>
             <div className={s.tabletGuysBlock}>
               <img loading='lazy' width='308' height='340' src='/images/tablet-guys.svg' alt='' />
