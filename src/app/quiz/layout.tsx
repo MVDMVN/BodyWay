@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { kebabToCamel } from "./_utils/case";
 import { QUIZ, ORDER, pathOf, nextKey, prevKey, type StepKey } from "./schema";
 import { QuizProvider, useQuiz } from "./QuizContext";
+import { AnimatePresence, motion } from "framer-motion";
 import s from "./layout.module.css";
 import PrimaryButton from "./_ui/PrimaryButton";
 
@@ -19,7 +20,6 @@ function Shell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
 
-  // безопасный разбор сегмента шага
   const afterQuiz = pathname.split("/quiz")[1] || "";
   const seg = afterQuiz.split("/").filter(Boolean)[0] || "step-age-range";
   const currentKey = kebabToCamel(seg) as StepKey;
@@ -36,32 +36,29 @@ function Shell({ children }: { children: React.ReactNode }) {
   const hideNextBtn = cfg?.ui?.hideNextBtn === true;
   const maxWidth = cfg?.ui?.width ?? "500px";
 
-  // ✅ Кнопка активна, если шаг валиден И (есть next ИЛИ задан nextPath)
   const canGoNext = isAnswered(currentKey) && (!!next || !!cfg?.ui?.nextPath);
 
   function goNext() {
-    // не даём уйти вперёд, если шаг невалиден
     if (!isAnswered(currentKey)) return;
-
-    // приоритет: явный nextPath из конфигурации (например, переход на /result)
     if (cfg?.ui?.nextPath) {
       router.push(cfg.ui.nextPath);
       return;
     }
-
-    // иначе — обычная навигация по ORDER
     if (next) {
       router.push(pathOf(next));
-      return;
     }
-
-    // если ни nextPath, ни next — ничего не делаем (краевой случай)
   }
+
+  // fade-only
+  const variants = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
+  };
 
   return (
     <div className={s.wrap}>
       <div className={s.container}>
-        {/* Если хочешь прятать шапку ВООБЩЕ — замени блок ниже на: { !hideHeader && (<header>...</header>) } */}
         {hideHeader ? (
           <header className={s.header}>
             <Link href={prev ? pathOf(prev) : "/"} className={s.backBtn} aria-label='Back'>
@@ -96,7 +93,17 @@ function Shell({ children }: { children: React.ReactNode }) {
         )}
 
         <main className={s.card} style={{ maxWidth }}>
-          {children}
+          <AnimatePresence mode='wait' initial={false}>
+            <motion.div
+              key={currentKey}
+              variants={variants}
+              initial='initial'
+              animate='animate'
+              exit='exit'
+              transition={{ duration: 0.3, ease: "easeInOut" }}>
+              {children}
+            </motion.div>
+          </AnimatePresence>
         </main>
       </div>
 
