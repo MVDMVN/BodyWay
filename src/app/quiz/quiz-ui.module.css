@@ -107,3 +107,8 @@
     line-height: 16px;
   }
 }
+
+.err {
+  color: #ec3e4f;
+  margin: 12px 0 0 0;
+}

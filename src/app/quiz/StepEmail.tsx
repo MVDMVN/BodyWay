@@ -131,7 +131,7 @@ export default function StepEmail({ stepKey }: Props) {
             </div>
           )}
 
-          {error && <p className={s.err}>{error}</p>}
+          {error && <p className={u.err}>{error}</p>}
         </div>
       </div>
 

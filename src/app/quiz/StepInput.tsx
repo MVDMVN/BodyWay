@@ -83,7 +83,7 @@ export default function StepInput({ stepKey }: Props) {
           {cfg.unit && <span className={s.suffix}>{cfg.unit}</span>}
         </div>
 
-        {error && <p className={s.err}>{error}</p>}
+        {error && <p className={u.err}>{error}</p>}
       </div>
 
       {hasTooltip && stepKey !== "stepWeight" && (
