@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import s from "./result.module.css";
-import { Images } from "../quiz/schema.ts";
+import { Images } from "../quiz/schema";
 
 type Answers = Record<string, unknown>;
 
