@@ -130,3 +130,12 @@
     padding: 12px 0;
   }
 }
+
+.stage {
+  position: relative;
+  width: 100%;
+}
+.scene {
+  position: absolute;
+  inset: 0;
+}
