@@ -38,8 +38,11 @@ export default function ResultPage() {
     return Array.isArray(z) && z.length ? z.join(", ") : "Arms, Legs, Abs";
   }, [answers]);
 
-  const gender = useMemo(() => {
-    return localStorage.getItem("gender");
+  const [gender, setGender] = useState<string | null>(null);
+  useEffect(() => {
+    try {
+      setGender(localStorage.getItem("gender"));
+    } catch {}
   }, []);
 
   return (
