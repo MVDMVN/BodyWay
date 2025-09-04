@@ -31,7 +31,7 @@
   position: relative;
   display: flex;
   background: #faf2e8;
-  padding: 24px 16px;
+  padding: 0 16px 24px 16px;
 }
 .sectionHeader::before {
   content: "";
@@ -90,11 +90,13 @@
 }
 .contentWrapper h1 {
   color: #292929;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
+  font-size: 22px;
+  line-height: 28px;
 }
 .contentDescription {
   font-weight: 400;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 .contentGender {
   font-size: 20px;
@@ -157,7 +159,7 @@
 
   .contentBlock {
     flex-direction: row; /* было в styled-components */
-    width: 630px;
+    width: 710px;
     align-items: center;
     text-align: left;
   }
@@ -166,11 +168,11 @@
   }
 
   .contentWrapper {
-    width: 335px;
+    width: 420px;
     padding-right: 40px;
   }
   .contentWrapper h1 {
-    font-size: 40px;
+    font-size: 26px;
     line-height: 124%;
     letter-spacing: -0.3px;
     margin-bottom: 24px;
@@ -243,8 +245,9 @@
     padding-right: 0;
   }
   .contentWrapper h1 {
-    font-size: 60px;
-    line-height: 120%;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 26px;
     letter-spacing: -0.03em;
   }
   .contentDescription {
@@ -267,7 +270,7 @@
 /* Footer */
 .footer {
   background-color: rgb(250, 242, 232);
-  padding: 60px 0;
+  padding: 12px 0 60px 0;
   text-align: center;
 }
 .footerText {

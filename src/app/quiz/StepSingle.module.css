@@ -13,6 +13,10 @@
   align-items: flex-start;
 }
 
+.sideWrapper aside {
+  min-width: 130px;
+}
+
 .sideCol {
 }
 

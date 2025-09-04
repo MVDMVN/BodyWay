@@ -186,8 +186,9 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     title: "Choose your body type",
     options: {
       male: [
-        { value: "Muscle Gain", label: "Muscle Gain", image: "/images/step-goal/male/swole.webp" },
-        { value: "Weight Loss", label: "Weight Loss", image: "/images/step-goal/male/heavier.webp" },
+        { value: "Skinny", label: "Skinny", image: "/images/step-bodytype/male/skinny.webp" },
+        { value: "Regular", label: "Regular", image: "/images/step-bodytype/male/regular.webp" },
+        { value: "Extra Plump", label: "Extra Plump", image: "/images/step-bodytype/male/extra-plumb.webp" },
       ],
       female: [
         { value: "Regular", label: "Regular", image: "/images/step-bodytype/female/regular.webp" },
@@ -201,8 +202,9 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     title: "Choose the body you want",
     options: {
       male: [
-        { value: "Muscle Gain", label: "Muscle Gain", image: "/images/step-goal/male/swole.webp" },
-        { value: "Weight Loss", label: "Weight Loss", image: "/images/step-goal/male/heavier.webp" },
+        { value: "Cut", label: "Cut", image: "/images/step-body-want/male/cut.webp" },
+        { value: "Bulk", label: "Bulk", image: "/images/step-body-want/male/bulk.webp" },
+        { value: "Extra Bulk", label: "Extra Bulk", image: "/images/step-body-want/male/extra-bulk.webp" },
       ],
       female: [
         { value: "Fit", label: "Fit", image: "/images/step-body-want/female/fit.webp" },
@@ -217,8 +219,9 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     hasUltiButton: false,
     options: {
       male: [
-        { value: "Muscle Gain", label: "Muscle Gain", image: "/images/step-goal/male/swole.webp" },
-        { value: "Weight Loss", label: "Weight Loss", image: "/images/step-goal/male/heavier.webp" },
+        { value: "Abs", label: "Abs", image: "/images/step-target-zones/male/abs.webp" },
+        { value: "Arms & Chest", label: "Arms & Chest", image: "/images/step-target-zones/male/arms-chest.webp" },
+        { value: "Legs", label: "Legs", image: "/images/step-target-zones/male/legs.webp" },
       ],
       female: [
         { value: "Slim Legs", label: "Slim Legs", image: "/images/step-target-zones/female/legs.webp" },
@@ -294,10 +297,10 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     sideImageFemale: "/images/step-perfect-weight/female/perfect-weight-female.webp",
     options: {
       male: [
-        { value: "Less than a year ago", label: "Less than a year ago" },
-        { value: "1-3 years ago", label: "1-3 years ago" },
+        { value: "0-6 months", label: "0-6 months" },
+        { value: "7-12 months", label: "7-12 months" },
+        { value: "1-3 years", label: "1-3 years" },
         { value: "More than 3 years ago", label: "More than 3 years ago" },
-        { value: "Never", label: "Never" },
       ],
       female: [
         { value: "Less than a year ago", label: "Less than a year ago" },
@@ -320,19 +323,19 @@ export const QUIZ: Record<StepKey, StepConfig> = {
         { value: "No, i don't", label: "No, i don't", group: "g1", icon: "/images/step-do-you-workout/male/not.svg" },
         {
           value: "Only walks",
-          label: "Obly walks",
+          label: "Only walks",
           group: "g1",
           icon: "/images/step-do-you-workout/male/only-walk.svg",
         },
         {
           value: "1-2 times a week",
-          label: "1-2 times a wekk",
+          label: "1-2 times a week",
           group: "g2",
           icon: "/images/step-do-you-workout/male/1-2-times.svg",
         },
         {
           value: "3-5 times a week",
-          label: "3-5 times a wekk",
+          label: "3-5 times a week",
           group: "g2",
           icon: "/images/step-do-you-workout/male/3-5-times.svg",
         },
@@ -347,19 +350,19 @@ export const QUIZ: Record<StepKey, StepConfig> = {
         { value: "No, i don't", label: "No, i don't", group: "g1", icon: "/images/step-do-you-workout/female/not.svg" },
         {
           value: "Only walks",
-          label: "Obly walks",
+          label: "Only walks",
           group: "g1",
           icon: "/images/step-do-you-workout/female/only-walk.svg",
         },
         {
           value: "1-2 times a week",
-          label: "1-2 times a wekk",
+          label: "1-2 times a week",
           group: "g2",
           icon: "/images/step-do-you-workout/female/1-2-times.svg",
         },
         {
           value: "3-5 times a week",
-          label: "3-5 times a wekk",
+          label: "3-5 times a week",
           group: "g2",
           icon: "/images/step-do-you-workout/female/3-5-times.svg",
         },

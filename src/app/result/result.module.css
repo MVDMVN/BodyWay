@@ -6,6 +6,7 @@
   --black-40: #8f8f8f;
   --black-60: #5c5c5c;
   --black-80: #292929;
+  --gray-bg: #f5f5f5;
 }
 
 .app {
@@ -38,8 +39,12 @@
   padding: 8px 0;
 }
 
+.logo {
+  margin: 0 auto;
+}
+
 .logo img {
-  height: 32px;
+  height: 50px;
   width: auto;
   display: block;
 }
@@ -52,9 +57,31 @@
   font-size: 16px;
 }
 
+@keyframes btnAnim {
+  from {
+    box-shadow: 0 0 0 0 #00857a;
+  }
+  to {
+    box-shadow: transparent 0px 0px 0px 14px;
+  }
+}
+
 .btnPrimary {
-  background: var(--primary-50);
-  color: var(--black-0);
+  animation: 2s ease infinite btnAnim;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  font-weight: 500;
+  justify-content: center;
+  letter-spacing: 0.14px;
+  border: 0px;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 28px;
+  padding: 10px 16px;
+  background-color: var(--primary-50);
+  color: #fff;
+  margin: 0 auto;
 }
 .btnPrimary:hover {
   background: var(--primary-40);
@@ -62,9 +89,6 @@
 
 .section {
   padding: 32px 0;
-}
-.sectionSoft {
-  background: #eaf7f6; /* лёгкий фон блока */
 }
 
 .title {
@@ -84,53 +108,178 @@
   font-size: 14px;
   line-height: 20px;
   text-align: center;
+  margin: 12px 0 24px 0;
 }
 
-/* Before/After */
+.textWrapper {
+  margin: 8px 0px 0px 16px;
+  padding: 8px 0px 24px;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  grid-area: 3 / 1 / 4 / 2;
+  text-align: left;
+}
+
+/* ===== GRID: 2 cols × 4 rows ===== */
 .ba {
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
-  gap: 16px;
-}
-.baCol {
-  flex: 0 0 auto;
-  width: 155px;
-  text-align: center;
-}
-.baLabel {
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-.baArrow {
-  display: flex;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "labelL labelR"
+    "imgL   imgR"
+    "bfL    bfR"
+    "barsL  barsR";
+  column-gap: 10px;
   align-items: center;
-  color: var(--black-60);
-}
-.baArrow svg {
-  width: 40px;
-  height: 40px;
+  justify-items: center;
+  background-color: #faf2e8;
+  padding: 24px 16px 8px 16px;
 }
 
-/* Energy “bars” */
+/* areas */
+.labelL {
+  grid-area: labelL;
+}
+.labelR {
+  grid-area: labelR;
+}
+.imgL {
+  grid-area: imgL;
+}
+.imgR {
+  grid-area: imgR;
+}
+.bfL {
+  grid-area: bfL;
+}
+.bfR {
+  grid-area: bfR;
+}
+.barsL {
+  grid-area: barsL;
+}
+.barsR {
+  grid-area: barsR;
+}
+
+/* labels */
+.baLabel {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-black80);
+  line-height: 1.4;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.baLabel:first-child {
+  border-right: 1px solid #fff;
+}
+
+/* images */
+.baImg img {
+  width: 155px;
+  height: 230px;
+  object-fit: contain;
+}
+
+/* body fat boxes (как в оригинале: тонкие бордеры) */
+.bf {
+  width: 100%;
+  padding: 8px 0 24px 0;
+}
+.bfL {
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+}
+.bfR {
+  border-bottom: 2px solid #fff;
+}
+.bfTitle {
+  margin: 0 0 6px 0;
+  color: var(--color-black80);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 26px;
+}
+.bfValue {
+  color: var(--color-black80);
+  font-size: 16px;
+  margin: 0;
+}
+
+/* bars */
+.barsWrapper {
+  width: 100%;
+  padding-top: 12px;
+  padding-bottom: 18px;
+}
+.leftBar {
+  border-right: 2px solid #fff;
+}
 .bars {
-  list-style: none;
   display: flex;
+  list-style: none;
   gap: 4px;
   padding: 0;
-  margin: 12px 0 0 0;
+  margin: 12px 0 0;
+  width: 100%;
   justify-content: center;
+  padding: 0 16px 0 0;
+}
+.barTitle {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 26px;
+  margin: 0 0 8px 0;
 }
 .bar {
-  width: 20%;
+  flex: 1 1 0;
   height: 6px;
-  background: var(--black-0);
+  background-color: #fff;
   border-radius: 6px;
-  border: 1px solid var(--black-5);
 }
 .barOn {
-  background: #33b3a8; /* зелёная полоса */
-  border-color: #33b3a8;
+  background-color: #33b3a8;
+}
+
+/* arrow overlay (по центру между картинками) */
+.baArrow {
+  position: absolute;
+  top: 32%;
+  left: 50%;
+  transform: translate(-50%, -46%);
+  width: 70px;
+  height: auto;
+  pointer-events: none;
+}
+
+/* ——— адаптив ——— */
+@media (min-width: 768px) {
+  .ba {
+    column-gap: 24px;
+  }
+  .baImg img {
+    width: 170px;
+    height: 252px;
+  }
+  .baArrow {
+    width: 176px;
+  }
+}
+@media (min-width: 1280px) {
+  .baImg img {
+    width: 130px;
+    height: 282px;
+  }
+  .baArrow {
+    width: 150px;
+  }
+  .btnPrimary {
+    min-width: 420px;
+  }
 }
 
 /* Cards */
@@ -138,20 +287,30 @@
   display: grid;
   gap: 16px;
   grid-template-columns: 1fr;
+  max-width: 680px;
+  margin: 0 auto;
 }
 @media (min-width: 768px) {
   .cards {
     grid-template-columns: 1fr 1fr;
   }
 }
+.cardMainTitle {
+  letter-spacing: -0.2px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 34px;
+  line-height: 44px;
+  letter-spacing: -1.4px;
+  margin-bottom: 16px;
+}
 .card {
   display: flex;
   align-items: center;
   gap: 16px;
-  border: 2px solid var(--black-40);
   border-radius: 8px;
   padding: 12px 16px;
-  background: var(--black-0);
+  background: var(--gray-bg);
 }
 .cardIcon {
   width: 56px;
@@ -160,12 +319,23 @@
 }
 .cardTitle {
   color: var(--black-60);
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 400;
   margin-bottom: 4px;
 }
 .cardValue {
   font-weight: 600;
-  font-size: 18px;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+@media (min-width: 1280px) {
+  .cardMainTitle {
+    font-size: 44px;
+    line-height: 52px;
+    margin-bottom: 24px;
+  }
 }
 
 /* Checklist */
@@ -173,6 +343,8 @@
   display: grid;
   gap: 8px;
   grid-template-columns: 1fr;
+  max-width: 680px;
+  margin: 0 auto 50px auto;
 }
 @media (min-width: 768px) {
   .checklist {
@@ -191,6 +363,9 @@
 }
 
 /* Money-back */
+.moneyBlock {
+  background: #eaf7f6; /* лёгкий фон блока */
+}
 .money {
   text-align: center;
 }
@@ -198,14 +373,33 @@
   width: 117px;
   height: 137px;
   object-fit: contain;
-  margin: 0 auto 8px;
+  margin: -65 auto 8px;
 }
 
-/* Footer */
-.footer {
-  padding: 24px 0 32px;
-  background: var(--black-5);
-  color: var(--black-60);
-  font-size: 12px;
-  text-align: center;
+.moneyTitle {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  line-height: 44px;
+  text-transform: none;
+}
+
+.moneySubtitle {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: normal;
+  line-height: 26px;
+  text-transform: none;
+}
+
+@media (max-width: 768px) {
+  .moneyTitle {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  .moneySubtitle {
+    font-size: 16px;
+    line-height: 20px;
+  }
 }

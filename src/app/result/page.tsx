@@ -38,6 +38,10 @@ export default function ResultPage() {
     return Array.isArray(z) && z.length ? z.join(", ") : "Arms, Legs, Abs";
   }, [answers]);
 
+  const gender = useMemo(() => {
+    return localStorage.getItem("gender");
+  }, []);
+
   return (
     <div className={s.app}>
       <header className={s.header}>
@@ -45,23 +49,45 @@ export default function ResultPage() {
           <Link href='/' className={s.logo}>
             <img src='/images/logo.png' alt='Unimeal' />
           </Link>
-          <button
-            className={`${s.btn} ${s.btnPrimary}`}
-            onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })}>
-            Get My Results
-          </button>
         </div>
       </header>
 
       <main>
-        {/* Before / After */}
         <section className={s.section}>
           <div className={s.container}>
             <div className={s.ba}>
-              <div className={s.baCol}>
-                <div className={s.baLabel}>Your weight</div>
-                <img src='/images/before.png' alt='Before' width={155} height={230} />
-                <ul className={s.bars}>
+              {/* row 1 — labels */}
+              <div className={`${s.baLabel} ${s.labelL}`}>Your weight</div>
+              <div className={`${s.baLabel} ${s.labelR}`}>Goal</div>
+
+              {/* row 2 — images */}
+              <div className={`${s.baImg} ${s.imgL}`}>
+                {gender === "male" ? (
+                  <img src='/images/result/male-fat.webp' alt='Before' />
+                ) : (
+                  <img src='/images/result/female-fat.webp' alt='Before' />
+                )}
+              </div>
+              <div className={`${s.baImg} ${s.imgR}`}>
+                {gender === "male" ? (
+                  <img src='/images/result/male-fit.webp' alt='After' />
+                ) : (
+                  <img src='/images/result/female-fit.webp' alt='After' />
+                )}
+              </div>
+
+              <section className={`${s.bf} ${s.bfL}`}>
+                <p className={s.bfTitle}>Body fat</p>
+                <p className={s.bfValue}>&gt;32%</p>
+              </section>
+              <section className={`${s.bf} ${s.bfR}`}>
+                <p className={s.bfTitle}>Body fat</p>
+                <p className={s.bfValue}>14–20%</p>
+              </section>
+
+              <div className={`${s.barsWrapper} ${s.leftBar}`}>
+                <p className={s.barTitle}>Energy level</p>
+                <ul className={`${s.bars} ${s.barsL}`}>
                   <li className={`${s.bar} ${s.barOn}`} />
                   <li className={`${s.bar} ${s.barOn}`} />
                   <li className={s.bar} />
@@ -69,17 +95,9 @@ export default function ResultPage() {
                   <li className={s.bar} />
                 </ul>
               </div>
-
-              <div className={s.baArrow}>
-                <svg viewBox='0 0 24 24' aria-hidden='true'>
-                  <path d='M8 4l8 8-8 8' fill='none' stroke='currentColor' strokeWidth='2' />
-                </svg>
-              </div>
-
-              <div className={s.baCol}>
-                <div className={s.baLabel}>Goal</div>
-                <img src='/images/after.png' alt='After' width={155} height={230} />
-                <ul className={s.bars}>
+              <div className={s.barsWrapper}>
+                <p className={s.barTitle}>Energy level</p>
+                <ul className={`${s.bars} ${s.barsR}`}>
                   <li className={`${s.bar} ${s.barOn}`} />
                   <li className={`${s.bar} ${s.barOn}`} />
                   <li className={`${s.bar} ${s.barOn}`} />
@@ -87,25 +105,33 @@ export default function ResultPage() {
                   <li className={`${s.bar} ${s.barOn}`} />
                 </ul>
               </div>
+
+              {/* overlay arrow */}
+              <img className={s.baArrow} src='/images/result/arrow-right.svg' alt='' aria-hidden='true' />
             </div>
 
             <p className={s.subtitle} style={{ marginTop: 8 }}>
               Results are not typical. Individual results may vary.
             </p>
           </div>
+          <button
+            className={`${s.btn} ${s.btnPrimary}`}
+            onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })}>
+            Get My Results
+          </button>
         </section>
 
         {/* Personalized plan */}
         <section className={s.section}>
           <div className={s.container}>
-            <h2 className={s.title}>
+            <h2 className={s.cardMainTitle}>
               Personalized plan for <span className={s.accent}>{name || "Alex"}</span> is{" "}
               <span className={s.accent}>ready</span>!
             </h2>
 
             <div className={s.cards}>
               <article className={s.card}>
-                <img className={s.cardIcon} src='/images/goal.svg' alt='' />
+                <img className={s.cardIcon} src='/images/result/goal.svg' alt='' />
                 <div>
                   <div className={s.cardTitle}>Goal</div>
                   <div className={s.cardValue}>{goalDiffLabel}</div>
@@ -113,15 +139,15 @@ export default function ResultPage() {
               </article>
 
               <article className={s.card}>
-                <img className={s.cardIcon} src='/images/meta.svg' alt='' />
+                <img className={s.cardIcon} src='/images/result/age.svg' alt='' />
                 <div>
-                  <div className={s.cardTitle}>Metabolic age</div>
+                  <div className={s.cardTitle}>Age</div>
                   <div className={s.cardValue}>{String(answers.stepAge ?? "—")}</div>
                 </div>
               </article>
 
               <article className={s.card}>
-                <img className={s.cardIcon} src='/images/energy.svg' alt='' />
+                <img className={s.cardIcon} src='/images/result/energy.svg' alt='' />
                 <div>
                   <div className={s.cardTitle}>Energy level</div>
                   <div className={s.cardValue}>Drained</div>
@@ -129,7 +155,7 @@ export default function ResultPage() {
               </article>
 
               <article className={s.card}>
-                <img className={s.cardIcon} src='/images/target.svg' alt='' />
+                <img className={s.cardIcon} src='/images/result/target.svg' alt='' />
                 <div>
                   <div className={s.cardTitle}>Target zones</div>
                   <div className={s.cardValue}>{zones}</div>
@@ -147,9 +173,7 @@ export default function ResultPage() {
               {["Reduce stress", "Feel healthier", "Form a healthy habit", "Improve sleep", "Self-discipline"].map(
                 (t) => (
                   <div className={s.check} key={t}>
-                    <svg viewBox='0 0 24 24' aria-hidden='true'>
-                      <path d='M20 6l-11 11-5-5' fill='none' stroke='currentColor' strokeWidth='2' />
-                    </svg>
+                    <img src='/images/result/check.svg' alt='' />
                     <span>{t}</span>
                   </div>
                 ),
@@ -159,22 +183,16 @@ export default function ResultPage() {
         </section>
 
         {/* Money-back */}
-        <section className={s.section}>
+        <section className={`${s.section} ${s.moneyBlock}`}>
           <div className={`${s.container} ${s.money}`}>
-            <img className={s.moneyBadge} src='/images/moneyback.svg' alt='Money-back' />
-            <h2 className={s.title}>Money-Back Guarantee</h2>
-            <p className={s.subtitle}>
-              If you don’t get visible results, you can get a full refund within 30 days after purchase.
+            <img className={s.moneyBadge} src='/images/result/money.svg' alt='Money-back' />
+            <h2 className={s.moneyTitle}>Money-Back Guarantee</h2>
+            <p className={s.moneySubtitle}>
+              In case you don’t get visible results, you can get a full refund within 30 days after purchase.
             </p>
           </div>
         </section>
       </main>
-
-      <footer className={s.footer}>
-        <div className={s.container}>
-          <p>Copyright © 2022 AmoApps Limited — All Rights Reserved</p>
-        </div>
-      </footer>
     </div>
   );
 }
