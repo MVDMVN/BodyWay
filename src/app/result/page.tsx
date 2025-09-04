@@ -80,7 +80,7 @@ export default function ResultPage() {
                 {gender === "male" ? (
                   <img src={Images.resultFitMale} alt='After' />
                 ) : (
-                  <img src={Images.resultFitMale} alt='After' />
+                  <img src={Images.resultFitFemale} alt='After' />
                 )}
               </div>
 
