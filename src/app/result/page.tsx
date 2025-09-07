@@ -13,6 +13,38 @@ function num(v: unknown) {
   return Number.isFinite(n) ? n : NaN;
 }
 
+/** Собираем строку запроса ИЗ "utm:v1" — берём все ключи, не только utm_* */
+function getAllParamsQueryString(): string {
+  try {
+    const raw = localStorage.getItem("utm:v1");
+    if (!raw) return "";
+
+    // Попытка как JSON-объект
+    try {
+      const obj = JSON.parse(raw) as Record<string, unknown>;
+      const params = new URLSearchParams();
+      Object.entries(obj).forEach(([k, v]) => {
+        const key = String(k).trim();
+        const val = v == null ? "" : String(v).trim();
+        if (!key || !val) return;
+        params.set(key, val); // кладём ВСЁ (utm, idpxl, token, и т.д.)
+      });
+      return params.toString();
+    } catch {
+      // Иначе считаем, что там уже готовая query-строка
+      const str = raw.trim().replace(/^[?#]/, "");
+      const parsed = new URLSearchParams(str);
+      const params = new URLSearchParams();
+      parsed.forEach((value, key) => {
+        if (key && value) params.set(key, value);
+      });
+      return params.toString();
+    }
+  } catch {
+    return "";
+  }
+}
+
 export default function ResultPage() {
   const [answers, setAnswers] = useState<Answers>({});
   const [gender, setGender] = useState<string | null>(null);
@@ -37,17 +69,21 @@ export default function ResultPage() {
   }, [answers]);
 
   const zones = useMemo(() => {
-    const z = answers.stepTargetZones;
+    const z = (answers as any).stepTargetZones;
     return Array.isArray(z) && z.length ? z.join(", ") : "Arms, Legs, Abs";
   }, [answers]);
 
-  // 👉 обработчик кнопки перехода на оффер
+  // 👉 кнопка перехода на оффер: offer:v1 + все пары из utm:v1
   function handleGetProgram() {
-    const offer = "{offer}"; // макрос Keitaro подставит оффер-домен
-    const qs = typeof window !== "undefined" ? window.location.search : "";
-    const sep = offer.includes("?") ? "&" : "?";
-    const targetUrl = qs ? `${offer}${sep}${qs.slice(1)}` : offer;
-    window.location.replace(targetUrl);
+    try {
+      const offer = localStorage.getItem("offer:v1") || "{offer}";
+      const q = getAllParamsQueryString();
+      const sep = offer.includes("?") ? "&" : "?";
+      const targetUrl = q ? `${offer}${sep}${q}` : offer;
+      window.location.replace(targetUrl);
+    } catch (e) {
+      console.error("Error building offer URL", e);
+    }
   }
 
   return (
@@ -114,7 +150,6 @@ export default function ResultPage() {
                 </ul>
               </div>
 
-              {/* overlay arrow */}
               <img className={s.baArrow} src={Images.arrowRight} alt='' aria-hidden='true' />
             </div>
 
@@ -123,7 +158,6 @@ export default function ResultPage() {
             </p>
           </div>
 
-          {/* скролл вниз */}
           <button className={`${s.btn} ${s.btnPrimary}`} onClick={handleGetProgram}>
             Get My Results
           </button>

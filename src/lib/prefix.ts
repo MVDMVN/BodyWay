@@ -1,7 +1,7 @@
 export const forKeitaro = false;
 
 // BASE_PATH активен только если forKeitaro === true
-export const BASE_PATH = forKeitaro ? "/lander/bodyway" : "";
+export const BASE_PATH_IMAGES = forKeitaro ? "/lander/bodyway/app" : "";
 
 // Хелпер для картинок/ассетов
 export function withBase(src: string) {
@@ -11,7 +11,7 @@ export function withBase(src: string) {
   if (/^(https?:)?\/\//.test(src) || src.startsWith("/_next")) return src;
 
   // если путь начинается с "/" — префиксуем
-  if (src.startsWith("/")) return `${BASE_PATH}${src}`;
+  if (src.startsWith("/")) return `${BASE_PATH_IMAGES}${src}`;
 
   return src;
 }

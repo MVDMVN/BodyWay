@@ -3,12 +3,25 @@
 import Link from "next/link";
 import s from "./marketing.module.css";
 
-function setGender(gender: "male" | "female") {
+function setCookie(name: string, value: string, days = 365) {
+  try {
+    const d = new Date();
+    d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
+    document.cookie = `${name}=${encodeURIComponent(value)}; expires=${d.toUTCString()}; path=/; SameSite=Lax`;
+  } catch {}
+}
+
+function setGenderAndGo(gender: "male" | "female", to: string) {
   try {
     localStorage.setItem("gender", gender);
-  } catch (e) {
-    console.error("Ошибка записи в localStorage", e);
-  }
+  } catch {}
+  setCookie("gender", gender);
+
+  // Навигацию делаем сами, чтобы onClick точно отработал до перехода
+  // Небольшая задержка — чтобы успел записаться cookie в «сложных» окружениях
+  setTimeout(() => {
+    window.location.assign(to);
+  }, 0);
 }
 
 export default function Page() {
@@ -37,11 +50,19 @@ export default function Page() {
                 Take our Quiz to get a personal meal plan and workout program to achieve your weight goals!
               </p>
               <p className={s.contentGender}>Select your gender</p>
+
               <div className={s.quizButtonsWrapper}>
-                <Link href='/quiz/step-age-range' className={s.contentMaleButton} onClick={() => setGender("male")}>
+                <Link
+                  href={{ pathname: "/quiz/step-age-range", hash: "g=male" }}
+                  prefetch={false}
+                  className={s.contentMaleButton}>
                   Male
                 </Link>
-                <Link href='/quiz/step-age-range' className={s.contentFemaleButton} onClick={() => setGender("female")}>
+
+                <Link
+                  href={{ pathname: "/quiz/step-age-range", hash: "g=female" }}
+                  prefetch={false}
+                  className={s.contentFemaleButton}>
                   Female
                 </Link>
               </div>

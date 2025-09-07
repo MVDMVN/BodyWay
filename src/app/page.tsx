@@ -1,5 +1,1 @@
-import MarketingPage from "../app/(marketing)/page";
-
-export default function HomePage() {
-  return <MarketingPage />;
-}
+export { default } from "./quiz/intro/page";

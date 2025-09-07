@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Loading…</title>
+    <script>
+      (function () {
+        function parseQuery(q) {
+          var out = {};
+          if (!q) return out;
+          q = q.charAt(0) === "?" ? q.slice(1) : q;
+          q.split("&").forEach(function (pair) {
+            if (!pair) return;
+            var i = pair.indexOf("=");
+            var k = i >= 0 ? pair.slice(0, i) : pair;
+            var v = i >= 0 ? pair.slice(i + 1) : "";
+            try {
+              k = decodeURIComponent(k || "").trim();
+              v = decodeURIComponent(v || "").trim();
+              if (k) out[k] = v;
+            } catch (_) {}
+          });
+          return out;
+        }
+
+        var params = parseQuery(location.search);
+
+        var keep = [
+          "utm_source",
+          "utm_medium",
+          "utm_campaign",
+          "utm_content",
+          "utm_term",
+          "utm_creative",
+          "utm_placement",
+          "campaign_id",
+          "adset_id",
+          "ad_id",
+          "adset_name",
+          "buyer",
+          "target",
+          "creo",
+          "idpxl",
+          "source",
+          "account_id",
+          "token",
+        ];
+        var utm = {};
+        for (var i = 0; i < keep.length; i++) {
+          var k = keep[i];
+          if (params[k] != null && params[k] !== "") utm[k] = params[k];
+        }
+
+        var offer = "{offer}";
+
+        try {
+          localStorage.setItem("utm:v1", JSON.stringify(utm));
+        } catch (e) {}
+        try {
+          localStorage.setItem("offer:v1", offer || "");
+        } catch (e) {}
+
+        var LANDING = "/lander/bodyway/app/";
+        location.replace(LANDING);
+      })();
+    </script>
+    <noscript>Redirecting…</noscript>
+  </head>
+  <body></body>
+</html>

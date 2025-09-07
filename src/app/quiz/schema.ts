@@ -1,5 +1,5 @@
 import { camelToKebab } from "./_utils/case";
-import { withBase } from "../../lib/prefix"; // путь поправь под себя
+import { withBase } from "../../lib/prefix";
 
 /** Ключи ответов (camelCase) */
 export type StepKey =
@@ -24,7 +24,8 @@ export type StepKey =
   | "stepGraphic"
   | "stepProgress"
   | "stepEmail"
-  | "stepName"; // добавляйте сюда новые ключи
+  | "stepName"
+  | "intro"; // добавляйте сюда новые ключи
 
 export type OptionDetail = {
   value: string;
@@ -144,6 +145,10 @@ export type StepConfig =
       placeholder?: string;
       description?: string;
       descriptionIcon?: string;
+      ui?: StepUi;
+    }
+  | {
+      kind: "intro";
       ui?: StepUi;
     };
 
@@ -762,6 +767,15 @@ export const QUIZ: Record<StepKey, StepConfig> = {
     },
     ui: { hideHeader: true, nextPath: "/result" },
   },
+  intro: {
+    kind: "intro",
+    ui: {
+      hideHeader: true,
+      hideNextBtn: true,
+      width: "100%", // или сколько нужно
+      nextPath: "/quiz/step-age-range", // куда идти после интро
+    },
+  },
 };
 
 export const Images = {
@@ -780,6 +794,11 @@ export const Images = {
   resultMoney: withBase("/images/result/money.svg"),
   checked: withBase("/images/checked.svg"),
   unchecked: withBase("/images/unchecked.svg"),
+};
+
+export const Links = {
+  maleQuiz: withBase("/quiz/step-age-range"),
+  femaleQuiz: withBase("/quiz/step-age-range"),
 };
 
 /** Порядок шагов: меняем ЗДЕСЬ — меняется везде */

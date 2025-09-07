@@ -29,8 +29,10 @@ function Shell({ children }: { children: React.ReactNode }) {
   const cfg = QUIZ[currentKey];
   const { isAnswered } = useQuiz();
 
+  const inOrder = ORDER.includes(currentKey);
+
   const idx = Math.max(0, ORDER.indexOf(currentKey));
-  const progress = Math.round(((idx + 1) / ORDER.length) * 100);
+  const progress = inOrder ? Math.round(((idx + 1) / ORDER.length) * 100) : 0;
   const prev = prevKey(currentKey);
   const next = nextKey(currentKey);
 
@@ -76,7 +78,7 @@ function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div className={s.wrap}>
       <div className={s.container}>
-        {hideHeader ? (
+        {hideHeader && inOrder ? (
           <header className={s.header}>
             <Link href={prev ? pathOf(prev) : "/"} className={s.backBtn} aria-label='Back'>
               <img src={Images.backArrow} alt='' />
